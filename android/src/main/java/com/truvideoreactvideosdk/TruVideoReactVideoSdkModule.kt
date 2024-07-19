@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReadableArray
 import com.google.gson.Gson
 import com.truvideo.sdk.video.TruvideoSdkVideo
 import com.truvideo.sdk.video.interfaces.TruvideoSdkVideoCallback
@@ -138,7 +139,8 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun mergeVideos( videoUris: List<String>, resultPath: String,promise: Promise) {
+  fun mergeVideos( videoUris: ArrayList<String>, resultPath: String,promise: Promise) {
+
     // merge videos and save to resultPath the can be of any format
     // Build the merge builder
     try{
