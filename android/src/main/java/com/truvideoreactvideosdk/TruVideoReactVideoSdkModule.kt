@@ -22,6 +22,7 @@ import com.truvideo.sdk.video.usecases.TruvideoSdkVideoEditScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -100,6 +101,14 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       // Handle error
     }
   }
+
+  @ReactMethod
+  fun getResultPath(currentMilis: Long, extension: String): String {
+      // get result path with dynamic name
+      return File("/data/user/0/com.example.sampletruvideo/files/truvideo-sdk/camera/$currentMilis.$extension").path
+  }
+  
+
   @ReactMethod
   fun compareVideos( videoUris: List<String>,promise: Promise) {
     // compare videos and return true or false if they are ready to conca

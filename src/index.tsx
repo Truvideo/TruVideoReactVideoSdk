@@ -73,3 +73,10 @@ export function editVideo(
 export function getAllRequest(): Promise<string> {
   return TruVideoReactVideoSdk.getAllRequest();
 }
+
+export function getResultPath(
+  number: number,
+  extension: String
+): Promise<string> {
+  return TruVideoReactVideoSdk.getResultPath(number, extension);
+}
