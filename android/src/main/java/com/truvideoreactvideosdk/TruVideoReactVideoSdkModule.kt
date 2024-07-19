@@ -103,11 +103,11 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getResultPath(currentMilis: Long, extension: String): String {
+  fun getResultPath(fileName: String): String {
       // get result path with dynamic name
-      return File("/data/user/0/com.example.sampletruvideo/files/truvideo-sdk/camera/$currentMilis.$extension").path
+      return File("/data/user/0/com.example.sampletruvideo/files/truvideo-sdk/camera/$fileName").path
   }
-  
+
 
   @ReactMethod
   fun compareVideos( videoUris: List<String>,promise: Promise) {
