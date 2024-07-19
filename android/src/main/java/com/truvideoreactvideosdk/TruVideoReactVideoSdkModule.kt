@@ -139,12 +139,16 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun mergeVideos( videoUris: ArrayList<String>, resultPath: String,promise: Promise) {
+  fun mergeVideos( videoUris: ReadableArray, resultPath: String,promise: Promise) {
 
+    val videoUri = ArrayList<String>()
+    for (i in 0 until videoUris.size()) {
+      videoUri.add(videoUris.getString(i))
+    }
     // merge videos and save to resultPath the can be of any format
     // Build the merge builder
     try{
-      val builder = TruvideoSdkVideo.MergeBuilder(videoUris, resultPath)
+      val builder = TruvideoSdkVideo.MergeBuilder(videoUri, resultPath)
       scope.launch {
         val request = builder.build()
         request.process()
