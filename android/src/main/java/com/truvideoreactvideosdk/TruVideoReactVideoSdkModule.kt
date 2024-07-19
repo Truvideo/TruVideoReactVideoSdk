@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReadableArray
 import com.google.gson.Gson
 import com.truvideo.sdk.video.TruvideoSdkVideo
 import com.truvideo.sdk.video.interfaces.TruvideoSdkVideoCallback
@@ -22,6 +23,7 @@ import com.truvideo.sdk.video.usecases.TruvideoSdkVideoEditScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -100,6 +102,14 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       // Handle error
     }
   }
+
+  @ReactMethod
+  fun getResultPath(fileName: String): String {
+      // get result path with dynamic name
+      return File("/data/user/0/com.example.sampletruvideo/files/truvideo-sdk/camera/$fileName").path
+  }
+
+
   @ReactMethod
   fun compareVideos( videoUris: List<String>,promise: Promise) {
     // compare videos and return true or false if they are ready to conca
@@ -129,11 +139,16 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun mergeVideos( videoUris: List<String>, resultPath: String,promise: Promise) {
+  fun mergeVideos( videoUris: ReadableArray, resultPath: String,promise: Promise) {
+
+    val videoUri = ArrayList<String>()
+    for (i in 0 until videoUris.size()) {
+      videoUri.add(videoUris.getString(i))
+    }
     // merge videos and save to resultPath the can be of any format
     // Build the merge builder
     try{
-      val builder = TruvideoSdkVideo.MergeBuilder(videoUris, resultPath)
+      val builder = TruvideoSdkVideo.MergeBuilder(videoUri, resultPath)
       scope.launch {
         val request = builder.build()
         request.process()
