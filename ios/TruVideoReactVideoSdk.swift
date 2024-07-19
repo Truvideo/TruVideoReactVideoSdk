@@ -7,8 +7,21 @@ class TruVideoReactVideoSdk: NSObject {
     func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         resolve(a*b)
     }
-    
-    
+
+    @objc(getResultPath:withResolver:withRejecter:)
+    func getResultPath(path: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        let fileManager = FileManager.default
+        
+        do {
+            let documentsURL = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let resultPath = documentsURL.appendingPathComponent(path).path
+            resolve(resultPath)
+        } catch {
+            let error = NSError(domain: "com.yourdomain.yourapp", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to get document directory path"])
+            reject("no_path", "There is no result path", error)
+        }
+    }
+
     @objc(compareVideos:withResolver:withRejecter:)
     func compareVideos(videos:[String], resolve:  @escaping  RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) {
         let urlArray: [URL] = createUrlArray(videos: videos)
