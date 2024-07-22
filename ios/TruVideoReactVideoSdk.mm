@@ -43,6 +43,10 @@ RCT_EXTERN_METHOD(editVideo:(NSString)video
                   withOutput:(NSString)outputURL
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
+                 
+RCT_EXTERN_METHOD(getResultPath:(NSString)path
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
 
 
 
