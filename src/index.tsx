@@ -74,7 +74,7 @@ export function getAllRequest(): Promise<string> {
   return TruVideoReactVideoSdk.getAllRequest();
 }
 
-export function getResultPath(path: string): string {
+export function getResultPath(path: string): Promise<string> {
   return TruVideoReactVideoSdk.getResultPath(path);
 }
 
