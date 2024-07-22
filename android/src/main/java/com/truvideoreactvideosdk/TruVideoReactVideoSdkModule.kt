@@ -59,7 +59,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       scope.launch {
         val request = builder.build()
         request.process()
-        promise.resolve(gson.toJson(request))
+        promise.resolve("concat successfully")
       }
       // Handle result
       // the concated video its on 'resultVideoPath'
@@ -101,15 +101,10 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       }
     }
     // Process the encode builder
-    result.build(object : TruvideoSdkVideoCallback<TruvideoSdkVideoRequest> {
-      override fun onComplete(result: TruvideoSdkVideoRequest) {
-        promise.resolve(result)
-      }
-
-      override fun onError(exception: TruvideoSdkVideoException) {
-        promise.reject(exception.message)
-      }
-    })
+    scope.launch{
+      result.build().process()
+      promise.resolve("encode success")  
+    }
   }
   @ReactMethod
   fun getVideoInfo(videoPath: String,promise: Promise) {
@@ -151,7 +146,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun editVideo(videoUri: String, resultPath: String,promise: Promise) {
     mainPromise = promise
-    reactApplicationContext.startActivity(Intent(reactApplicationContext, EditScreenActivity::class.java).putExtra("videoUri", videoUri).putExtra("resultPath", resultPath))
+    currentActivity!!.startActivity(Intent(reactApplicationContext, EditScreenActivity::class.java).putExtra("videoUri", videoUri).putExtra("resultPath", resultPath))
   }
 
   fun toastMessage(context: Context, message: String) {
