@@ -29,9 +29,10 @@ export function concatVideos(
 
 export function encodeVideo(
   videoUri: string,
-  resultPath: string
+  resultPath: string,
+  config: string
 ): Promise<string> {
-  return TruVideoReactVideoSdk.changeEncoding(videoUri, resultPath);
+  return TruVideoReactVideoSdk.changeEncoding(videoUri, resultPath, config);
 }
 
 export function getVideoInfo(videoPath: string): Promise<string> {
@@ -44,16 +45,26 @@ export function compareVideos(videoUris: string[]): Promise<string> {
 
 export function mergeVideos(
   videoUris: string[],
-  resultPath: string
+  resultPath: string,
+  config: string
 ): Promise<string> {
-  return TruVideoReactVideoSdk.mergeVideos(videoUris, resultPath);
+  return TruVideoReactVideoSdk.mergeVideos(videoUris, resultPath, config);
 }
 
 export function generateThumbnail(
   videoPath: string,
-  resultPath: string
+  resultPath: string,
+  position: string,
+  width: string,
+  height: string
 ): Promise<string> {
-  return TruVideoReactVideoSdk.generateThumbnail(videoPath, resultPath);
+  return TruVideoReactVideoSdk.generateThumbnail(
+    videoPath,
+    resultPath,
+    position,
+    width,
+    height
+  );
 }
 
 export function cleanNoise(
@@ -70,11 +81,6 @@ export function editVideo(
   return TruVideoReactVideoSdk.editVideo(videoUri, resultPath);
 }
 
-export function getAllRequest(): Promise<string> {
-  return TruVideoReactVideoSdk.getAllRequest();
-}
-
 export function getResultPath(path: string): string {
   return TruVideoReactVideoSdk.getResultPath(path);
 }
-
