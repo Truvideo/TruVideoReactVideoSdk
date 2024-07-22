@@ -22,6 +22,7 @@ import com.truvideo.sdk.video.model.TruvideoSdkVideoVideoCodec
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.io.File
 
 class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
@@ -70,16 +71,35 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
 
   }
   @ReactMethod
-  fun changeEncoding(videoUri: String, resultPath: String,promise: Promise) {
+  fun changeEncoding(videoUri: String, resultPath: String,config : String,promise: Promise) {
     // Change encoding of video and save to resultPath
     // Build the encode builder
     val result = TruvideoSdkVideo.EncodeBuilder(videoUri, resultPath)
-    result.height = 640
-    result.width = 480
-    result.framesRate = TruvideoSdkVideoFrameRate.fiftyFps
-    result.videoCodec = TruvideoSdkVideoVideoCodec.h264
-
-
+    val configuration = JSONObject(config)
+    if(configuration.has("height")){
+      result.height = configuration.getInt("height")
+    }
+    if(configuration.has("width")){
+      result.width = configuration.getInt("width")
+    }
+    if(configuration.has("framesRate")){
+      when(configuration.getString("framesRate")){
+        "twentyFourFps" -> result.framesRate = TruvideoSdkVideoFrameRate.twentyFourFps
+        "twentyFiveFps" -> result.framesRate = TruvideoSdkVideoFrameRate.twentyFiveFps
+        "thirtyFps" -> result.framesRate = TruvideoSdkVideoFrameRate.thirtyFps
+        "fiftyFps" -> result.framesRate = TruvideoSdkVideoFrameRate.fiftyFps
+        "sixtyFps" -> result.framesRate = TruvideoSdkVideoFrameRate.sixtyFps
+        else -> result.framesRate = TruvideoSdkVideoFrameRate.defaultFrameRate
+      }
+    }
+    if(configuration.has("videoCodec")){
+      when(configuration.getString("videoCodec")){
+        "h264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h264
+        "h265" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h265
+        "libx264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.libx264
+        else -> result.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
+      }
+    }
     // Process the encode builder
     result.build(object : TruvideoSdkVideoCallback<TruvideoSdkVideoRequest> {
       override fun onComplete(result: TruvideoSdkVideoRequest) {
@@ -143,10 +163,35 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun mergeVideos( videoUris: ReadableArray, resultPath: String,promise: Promise) {
+  fun mergeVideos( videoUris: ReadableArray, resultPath: String,config : String,promise: Promise) {
     try{
       val videoUriList = videoUris.toArrayList().map { it.toString() }
       val builder = TruvideoSdkVideo.MergeBuilder(videoUriList, resultPath)
+      val configuration = JSONObject(config)
+      if(configuration.has("height")){
+        builder.height = configuration.getInt("height")
+      }
+      if(configuration.has("width")){
+        builder.width = configuration.getInt("width")
+      }
+      if(configuration.has("framesRate")){
+        when(configuration.getString("framesRate")){
+          "twentyFourFps" -> builder.framesRate = TruvideoSdkVideoFrameRate.twentyFourFps
+          "twentyFiveFps" -> builder.framesRate = TruvideoSdkVideoFrameRate.twentyFiveFps
+          "thirtyFps" -> builder.framesRate = TruvideoSdkVideoFrameRate.thirtyFps
+          "fiftyFps" -> builder.framesRate = TruvideoSdkVideoFrameRate.fiftyFps
+          "sixtyFps" -> builder.framesRate = TruvideoSdkVideoFrameRate.sixtyFps
+          else -> builder.framesRate = TruvideoSdkVideoFrameRate.defaultFrameRate
+        }
+      }
+      if(configuration.has("videoCodec")){
+        when(configuration.getString("videoCodec")){
+          "h264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h264
+          "h265" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h265
+          "libx264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.libx264
+          else -> builder.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
+        }
+      }
       scope.launch {
         val request = builder.build()
         request.process()
@@ -162,23 +207,15 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getAllRequest(promise: Promise) {
-    // Get all request
-    scope.launch {
-      val result = TruvideoSdkVideo.getAllRequests()
-      promise.resolve(gson.toJson(result))
-    }
-  }
-  @ReactMethod
-    fun generateThumbnail(videoPath: String, resultPath: String,promise: Promise) {
+    fun generateThumbnail(videoPath: String, resultPath: String,position : String,width: String,height: String,promise: Promise) {
     try {
       scope.launch {
         val result = TruvideoSdkVideo.createThumbnail(
           videoPath = videoPath,
           resultPath = resultPath,
-          position = 1000,
-          width = 300, // or null
-          height = 300 // or null
+          position = position.toLong(),
+          width = width.toInt(), // or null
+          height = height.toInt() // or null
         )
         promise.resolve(result)
       }
