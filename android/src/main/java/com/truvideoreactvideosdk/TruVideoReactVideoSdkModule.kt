@@ -19,7 +19,6 @@ import com.truvideo.sdk.video.model.TruvideoSdkVideoException
 import com.truvideo.sdk.video.model.TruvideoSdkVideoFrameRate
 import com.truvideo.sdk.video.model.TruvideoSdkVideoRequest
 import com.truvideo.sdk.video.model.TruvideoSdkVideoVideoCodec
-import com.truvideo.sdk.video.usecases.TruvideoSdkVideoEditScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,21 +37,24 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun multiply(a: Double, b: Double, promise: Promise) {
     promise.resolve(a * b)
+//    authetication("EPhPPsbv7e", "9lHCnkfeLl",promise)
   }
 
 
   companion object {
     const val NAME = "TruVideoReactVideoSdk"
     var mainPromise : Promise? = null
+    var promise2 : Promise?  = null
   }
 
 
   @ReactMethod
-  fun concatVideos(videoUris: List<String>, resultPath: String,promise: Promise) {
+  fun concatVideos(videoUris: ReadableArray, resultPath: String,promise: Promise) {
     // concat videos and save to resultPath
     // Build the concat builder
     try {
-      val builder = TruvideoSdkVideo.ConcatBuilder(videoUris, resultPath)
+      val videoUriList = videoUris.toArrayList().map { it.toString() }
+      val builder = TruvideoSdkVideo.ConcatBuilder(videoUriList, resultPath)
       scope.launch {
         val request = builder.build()
         request.process()
@@ -104,18 +106,20 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getResultPath(fileName: String): String {
+  fun getResultPath(fileName: String,promise: Promise) {
       // get result path with dynamic name
-      return File("/data/user/0/com.example.sampletruvideo/files/truvideo-sdk/camera/$fileName").path
+      val basePath  = reactApplicationContext.filesDir
+      promise.resolve( File("$basePath/camera/$fileName").path)
   }
 
 
   @ReactMethod
-  fun compareVideos( videoUris: List<String>,promise: Promise) {
+  fun compareVideos( videoUris: ReadableArray,promise: Promise) {
     // compare videos and return true or false if they are ready to conca
     try {
+      val videoUriList = videoUris.toArrayList().map { it.toString() }
       scope.launch {
-        val result = TruvideoSdkVideo.compare(videoUris)
+        val result = TruvideoSdkVideo.compare(videoUriList)
         promise.resolve(result)
       }
     } catch (exception: Exception) {
@@ -140,19 +144,13 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun mergeVideos( videoUris: ReadableArray, resultPath: String,promise: Promise) {
-
-    val videoUri = ArrayList<String>()
-    for (i in 0 until videoUris.size()) {
-      videoUri.add(videoUris.getString(i))
-    }
-    // merge videos and save to resultPath the can be of any format
-    // Build the merge builder
     try{
-      val builder = TruvideoSdkVideo.MergeBuilder(videoUri, resultPath)
+      val videoUriList = videoUris.toArrayList().map { it.toString() }
+      val builder = TruvideoSdkVideo.MergeBuilder(videoUriList, resultPath)
       scope.launch {
         val request = builder.build()
         request.process()
-        promise.resolve(gson.toJson(request))
+        promise.resolve("Merge Successful")
       }
       // Handle result
       // the merged video its on 'resultVideoPath'
@@ -211,4 +209,5 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       exception.printStackTrace()
     }
   }
+
 }
