@@ -81,6 +81,6 @@ export function editVideo(
   return TruVideoReactVideoSdk.editVideo(videoUri, resultPath);
 }
 
-export function getResultPath(path: string): string {
+export function getResultPath(path: string): Promise<string> {
   return TruVideoReactVideoSdk.getResultPath(path);
 }
