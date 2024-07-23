@@ -16,6 +16,9 @@ RCT_EXTERN_METHOD(getVideoInfo:(NSString)video
 
 RCT_EXTERN_METHOD(generateThumbnail:(NSString)videoURL
                  withOutputURL:(NSString)outputURL
+                 withPosition:(NSString)position
+                 withWidth:(NSString)width
+                 withHeight:(NSString)height
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 
@@ -31,11 +34,13 @@ RCT_EXTERN_METHOD(concatVideos:([NSString])videos
 
 RCT_EXTERN_METHOD(mergeVideos:([NSString])videos
                  withOutput:(NSString)outputURL
+                 withConfig:(NSString)config
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(changeEncoding:(NSString)video
-                  withOutput:(NSString)outputURL
+                 withOutput:(NSString)outputURL
+                 withConfig:(NSString)config
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 
