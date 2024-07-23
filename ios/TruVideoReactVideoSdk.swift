@@ -44,7 +44,7 @@ class TruVideoReactVideoSdk: NSObject {
                 let urlArray: [URL] = [convertStringToURL(videos)]
                 // Call TruvideoSdkVideo to retrieve information about the videos
                 let result = try await TruvideoSdkVideo.getVideosInformation(videos: urlArray)
-                resolve(result)
+                resolve(result.description)
             } catch {
                 reject("json_error", "Error parsing JSON", error)
                 // Handle any errors that might occur during the process
@@ -80,7 +80,7 @@ class TruVideoReactVideoSdk: NSObject {
                 do {
                     // Generate a thumbnail for the provided video using TruvideoSdkVideo's thumbnailGenerator
                     let thumbnail = try await TruvideoSdkVideo.thumbnailGenerator.generateThumbnail(for: input)
-                    resolve(thumbnail)
+                    resolve(thumbnail.generatedThumbnailURL.absoluteString)
                     // Handle result - thumbnail.generatedThumbnailURL
                 } catch {
                     reject("json_error", "Error parsing JSON", error)
@@ -103,7 +103,7 @@ class TruVideoReactVideoSdk: NSObject {
                     at: videoUrl,
                     outputURL: outputUrl
                 )
-                resolve(result)
+                resolve(result.fileURL.absoluteString)
             } catch {
                 reject("json_error", "Error parsing JSON", error)
                 // Handle any errors that occur during the noise cleaning process
@@ -123,8 +123,8 @@ class TruVideoReactVideoSdk: NSObject {
                 let result = builder.build()
                 do{
                     let output = try? await result.process()
-                    resolve(output)
-                    await print("Successfully concatenated", output)
+                    resolve(output?.videoURL.absoluteString)
+                    await print("Successfully concatenated", output?.videoURL.absoluteString)
                 }
                 
             }
@@ -136,8 +136,8 @@ class TruVideoReactVideoSdk: NSObject {
     func mergeVideos(videos: [String], output: String,config : String ,resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) {
         // Create a MergeBuilder instance with specified parameters
         Task{
-            let videoUrl = createUrlArray(videos: videos)
-            let outputUrl = convertStringToURL(output)
+            let videoUrl = self.createUrlArray(videos: videos)
+            let outputUrl = self.convertStringToURL(output)
             guard let data = config.data(using: .utf8) else {
                 print("Invalid JSON string")
                 reject("json_error", "Invalid JSON string", nil)
@@ -154,12 +154,12 @@ class TruVideoReactVideoSdk: NSObject {
                     }
                     if let frameRateStr = configuration["framesRate"], let videoCodec = configuration["videoCodec"]{
                         
-                        let builder = TruvideoSdkVideo.MergeBuilder(videos: videoUrl, width: width, height: height, videoCodec: videoCodec(videoCodec as! String), audioCodec: .mp3, framesRate: frameRate(frameRateStr as! String) , outputURL: outputUrl)
+                        let builder = TruvideoSdkVideo.MergeBuilder(videos: videoUrl, width: width, height: height, videoCodec: self.videoCodecString(videoCodec as! String), audioCodec: .mp3, framesRate: self.frameRate(frameRateStr as! String) , outputURL: outputUrl)
                         let result = builder.build()
                         do{
                             let output = try? await result.process()
-                            resolve(output)
-                            await print("Successfully concatenated", output)
+                            resolve(output?.videoURL.absoluteString)
+                            await print("Successfully concatenated", output?.videoURL.absoluteString)
                         }
                     } else {
                         print("Invalid JSON format")
@@ -192,12 +192,12 @@ class TruVideoReactVideoSdk: NSObject {
             .fiftyFps
         }
     }
-    func videoCodec(_ videoCodecStr: String ) -> TruvideoSdkVideo.TruvideoSdkVideoVideoCodec{
+    func videoCodecString(_ videoCodecStr: String ) -> TruvideoSdkVideo.TruvideoSdkVideoVideoCodec{
         return switch videoCodecStr {
         case "h264":
             .h264
-        case "h256":
-            .h256
+        case "h265":
+            .h265
         default :
             .h264
         }
@@ -208,25 +208,50 @@ class TruVideoReactVideoSdk: NSObject {
         Task{
             let videoUrl = convertStringToURL(video)
             let outputUrl = convertStringToURL(output)
-            let builder = TruvideoSdkVideo.EncodingBuilder(at: videoUrl, width: 320, height: 240, videoCodec: .h264, audioCodec: .mp3, framesRate: .sixtyFps, outputURL: outputUrl)
-            let result = builder.build()
-            do{
-                let output = try? await result.process()
-                resolve(output)
-                // Print the output path of the concatenated video
-                print("Successfully concatenated", output)
+             guard let data = config.data(using: .utf8) else {
+                print("Invalid JSON string")
+                reject("json_error", "Invalid JSON string", nil)
+                return
+            }
+            do {
+                if let configuration = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    print(configuration)
+                    guard let width = configuration["width"] as? Double else {
+                        return
+                    }
+                    guard let height = configuration["height"] as? Double else{
+                        return
+                    }
+                    if let frameRateStr = configuration["framesRate"], let videoCodec = configuration["videoCodec"]{
+                        
+                        let builder = TruvideoSdkVideo.EncodingBuilder(at: videoUrl, width: width, height: height, videoCodec: videoCodecString(videoCodec as! String), audioCodec: .mp3, framesRate: frameRate(frameRateStr as! String) , outputURL: outputUrl)
+                        let result = builder.build()
+                        do{
+                            let output = try? await result.process()
+                            resolve(output?.videoURL.absoluteString)
+                            await print("Successfully concatenated", output?.videoURL.absoluteString)
+                        }
+                    } else {
+                        print("Invalid JSON format")
+                        reject("json_error", "Invalid JSON format", nil)
+                    }
+                }
+            }catch {
+                print("Error parsing JSON: \(error.localizedDescription)")
+                reject("json_error", "Error parsing JSON", error)
             }
             
         }
     }
     @objc(editVideo:withOutput:withResolver:withRejecter:)
     func editVideo(video : String,output : String, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock){
+        DispatchQueue.main.async{
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
             print("E_NO_ROOT_VIEW_CONTROLLER", "No root view controller found")
             return
         }
-        let videoUrl = convertStringToURL(video)
-        let outputUrl = convertStringToURL(output)
+            let videoUrl = self.convertStringToURL(video)
+            let outputUrl = self.convertStringToURL(output)
         let preset = TruvideoSdkVideoEditorPreset(
             videoURL: videoUrl,
             outputURL: outputUrl
@@ -236,10 +261,11 @@ class TruVideoReactVideoSdk: NSObject {
         rootViewController.presentTruvideoSdkVideoEditorView(preset: preset) { editionResult in
             // Handle result - editionResult.editedVideoURL
             // Print a success message along with the trimmer result
-            resolve(editionResult)
-            print("Successfully edited", editionResult)
+            resolve(editionResult.editedVideoURL?.absoluteString)
+            print("Successfully edited", editionResult.editedVideoURL?.absoluteString)
         }
         
+        }
     }
 }
 
