@@ -4,11 +4,6 @@ import Foundation
 @objc(TruVideoReactVideoSdk)
 class TruVideoReactVideoSdk: NSObject {
     
-    @objc(multiply:withB:withResolver:withRejecter:)
-    func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
-        resolve(a*b)
-    }
-    
     @objc(getResultPath:withResolver:withRejecter:)
     func getResultPath(path: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         let fileManager = FileManager.default

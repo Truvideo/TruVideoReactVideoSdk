@@ -33,15 +33,6 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     return NAME
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  fun multiply(a: Double, b: Double, promise: Promise) {
-    promise.resolve(a * b)
-//    authetication("EPhPPsbv7e", "9lHCnkfeLl",promise)
-  }
-
-
   companion object {
     const val NAME = "TruVideoReactVideoSdk"
     var mainPromise : Promise? = null
