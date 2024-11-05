@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
@@ -14,11 +13,9 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableArray
 import com.google.gson.Gson
 import com.truvideo.sdk.video.TruvideoSdkVideo
-import com.truvideo.sdk.video.interfaces.TruvideoSdkVideoCallback
-import com.truvideo.sdk.video.model.TruvideoSdkVideoException
+import com.truvideo.sdk.video.model.TruvideoSdkVideoFile
+import com.truvideo.sdk.video.model.TruvideoSdkVideoFileDescriptor
 import com.truvideo.sdk.video.model.TruvideoSdkVideoFrameRate
-import com.truvideo.sdk.video.model.TruvideoSdkVideoRequest
-import com.truvideo.sdk.video.model.TruvideoSdkVideoVideoCodec
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,14 +36,20 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     var promise2 : Promise?  = null
   }
 
-
+  @ReactMethod
+  fun multiply(a : Int, b: Int, promise: Promise){
+    promise.resolve(a*b)
+  }
   @ReactMethod
   fun concatVideos(videoUris: ReadableArray, resultPath: String,promise: Promise) {
     // concat videos and save to resultPath
     // Build the concat builder
     try {
       val videoUriList = videoUris.toArrayList().map { it.toString() }
-      val builder = TruvideoSdkVideo.ConcatBuilder(videoUriList, resultPath)
+      val builder = TruvideoSdkVideo.ConcatBuilder(
+        listVideoFile(videoUriList),
+        videoFileDescriptor(resultPath)
+      )
       scope.launch {
         val request = builder.build()
         request.process()
@@ -65,7 +68,9 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   fun changeEncoding(videoUri: String, resultPath: String,config : String,promise: Promise) {
     // Change encoding of video and save to resultPath
     // Build the encode builder
-    val result = TruvideoSdkVideo.EncodeBuilder(videoUri, resultPath)
+    val result = TruvideoSdkVideo.EncodeBuilder(
+      videoFile(videoUri),
+      videoFileDescriptor(resultPath))
     val configuration = JSONObject(config)
     if(configuration.has("height")){
       result.height = configuration.getInt("height")
@@ -83,25 +88,25 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
         else -> result.framesRate = TruvideoSdkVideoFrameRate.defaultFrameRate
       }
     }
-    if(configuration.has("videoCodec")){
-      when(configuration.getString("videoCodec")){
-        "h264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h264
-        "h265" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h265
-        "libx264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.libx264
-        else -> result.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
-      }
-    }
+//    if(configuration.has("videoCodec")){
+//      when(configuration.getString("videoCodec")){
+//        "h264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h264
+//        "h265" -> result.videoCodec = TruvideoSdkVideoVideoCodec.h265
+//        "libx264" -> result.videoCodec = TruvideoSdkVideoVideoCodec.libx264
+//        else -> result.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
+//      }
+//    }
     // Process the encode builder
     scope.launch{
       result.build().process()
-      promise.resolve("encode success")  
+      promise.resolve("encode success")
     }
   }
   @ReactMethod
   fun getVideoInfo(videoPath: String,promise: Promise) {
     try {
       scope.launch {
-        val info = TruvideoSdkVideo.getInfo(videoPath)
+        val info = TruvideoSdkVideo.getInfo(videoFile(videoPath))
         promise.resolve(gson.toJson(info))
       }
     } catch (exception: Exception) {
@@ -125,7 +130,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     try {
       val videoUriList = videoUris.toArrayList().map { it.toString() }
       scope.launch {
-        val result = TruvideoSdkVideo.compare(videoUriList)
+        val result = TruvideoSdkVideo.compare(listVideoFile(videoUriList))
         promise.resolve(result)
       }
     } catch (exception: Exception) {
@@ -152,7 +157,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   fun mergeVideos( videoUris: ReadableArray, resultPath: String,config : String,promise: Promise) {
     try{
       val videoUriList = videoUris.toArrayList().map { it.toString() }
-      val builder = TruvideoSdkVideo.MergeBuilder(videoUriList, resultPath)
+      val builder = TruvideoSdkVideo.MergeBuilder(listVideoFile(videoUriList), videoFileDescriptor(resultPath))
       val configuration = JSONObject(config)
       if(configuration.has("height")){
         builder.height = configuration.getInt("height")
@@ -170,14 +175,14 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
           else -> builder.framesRate = TruvideoSdkVideoFrameRate.defaultFrameRate
         }
       }
-      if(configuration.has("videoCodec")){
-        when(configuration.getString("videoCodec")){
-          "h264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h264
-          "h265" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h265
-          "libx264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.libx264
-          else -> builder.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
-        }
-      }
+//      if(configuration.has("videoCodec")){
+//        when(configuration.getString("videoCodec")){
+//          "h264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h264
+//          "h265" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.h265
+//          "libx264" -> builder.videoCodec = TruvideoSdkVideoVideoCodec.libx264
+//          else -> builder.videoCodec = TruvideoSdkVideoVideoCodec.defaultCodec
+//        }
+//      }
       scope.launch {
         val request = builder.build()
         request.process()
@@ -197,11 +202,11 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     try {
       scope.launch {
         val result = TruvideoSdkVideo.createThumbnail(
-          videoPath = videoPath,
-          resultPath = resultPath,
-          position = position.toLong(),
-          width = width.toInt(), // or null
-          height = height.toInt() // or null
+          videoFile(videoPath),
+          videoFileDescriptor(resultPath),
+          position.toLong(),
+          width.toInt(), // or null
+          height.toInt() // or null
         )
         promise.resolve(result)
       }
@@ -221,7 +226,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     // Clean noise from video and save to resultPath
     try{
       scope.launch {
-        val result = TruvideoSdkVideo.clearNoise(videoPath, resultPath)
+        val result = TruvideoSdkVideo.clearNoise(videoFile(videoPath), videoFileDescriptor(resultPath))
         promise.resolve("Clean Noise Successful")
       }
       // Handle result
@@ -233,4 +238,17 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  fun videoFile(inputPath : String): TruvideoSdkVideoFile {
+    return TruvideoSdkVideoFile.custom(inputPath)
+  }
+  fun videoFileDescriptor(outputPath : String): TruvideoSdkVideoFileDescriptor {
+    return TruvideoSdkVideoFileDescriptor.custom(outputPath)
+  }
+  fun listVideoFile(list : List<String>): List<TruvideoSdkVideoFile>{
+    val listVideo = ArrayList<TruvideoSdkVideoFile>()
+    list.forEach {
+      listVideo.add(videoFile(it))
+    }
+    return listVideo
+  }
 }
