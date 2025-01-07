@@ -2,19 +2,21 @@ package com.truvideoreactvideosdk
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.facebook.react.bridge.ReactMethod
-import com.truvideo.sdk.video.TruvideoSdkVideo
-import com.truvideo.sdk.video.usecases.TruvideoSdkVideoEditScreen
+import com.truvideo.sdk.video.model.TruvideoSdkVideoFile
+import com.truvideo.sdk.video.model.TruvideoSdkVideoFileDescriptor
+import com.truvideo.sdk.video.ui.activities.edit.TruvideoSdkVideoEditContract
+import com.truvideo.sdk.video.ui.activities.edit.TruvideoSdkVideoEditParams
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditScreenActivity : AppCompatActivity() {
+  private lateinit var editVideoLauncher: ActivityResultLauncher<TruvideoSdkVideoEditParams>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,16 +28,28 @@ class EditScreenActivity : AppCompatActivity() {
         }
         val videoUri = intent.getStringExtra("videoUri")
         val resultPath = intent.getStringExtra("resultPath")
-        val editScreen = TruvideoSdkVideo.initEditScreen(this)
+//        val editScreen = TruvideoSdkVideo.initEditScreen(this)
+        editVideoLauncher = registerForActivityResult(TruvideoSdkVideoEditContract(), { result ->
+          // edited video its on 'resultPath'
+          TruVideoReactVideoSdkModule.mainPromise!!.resolve(result)
+          finish()
+          Log.d("TAG", "editVideo: result=$result")
+        })
+
         CoroutineScope(Dispatchers.Main).launch {
-          editVideo(videoUri!!,resultPath!!,editScreen)
-        }
+            editVideo(videoUri!!,resultPath!!)
+          }
     }
-  suspend fun editVideo(videoUri: String, resultPath: String,editScreen: TruvideoSdkVideoEditScreen) {
+  suspend fun editVideo(videoUri: String, resultPath: String) {
     // Edit video and save to resultPath
-    val result = editScreen.open(videoUri, resultPath)
-    TruVideoReactVideoSdkModule.mainPromise!!.resolve(result)
-    finish()
-    Log.d("TAG", "editVideo: result=$result")
+    val input = TruvideoSdkVideoFile.custom(videoUri)
+    val output = TruvideoSdkVideoFileDescriptor.custom(resultPath)
+    editVideoLauncher.launch(
+      TruvideoSdkVideoEditParams(
+        input = input,
+        output = output
+      )
+    )
+
   }
 }

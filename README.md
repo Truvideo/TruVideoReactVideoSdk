@@ -5,6 +5,12 @@ none
 ## Installation
 
 ```sh
+"dependencies": {
+  // replace token with your personal access token
+    "truvideo-react-video-sdk": "git+https://<token>@github.com/Truvideo/TruVideoReactVideoSdk.git#release-version-76"
+}
+
+//or
 npm install truvideo-react-video-sdk
 ```
 
@@ -12,11 +18,82 @@ npm install truvideo-react-video-sdk
 
 
 ```js
-import { multiply } from 'truvideo-react-video-sdk';
+import { generateThumbnail,cleanNoise,editVideo,getResultPath,concatVideos,encodeVideo,getVideoInfo,compareVideos,mergeVideos } from 'truvideo-react-video-sdk';
 
 // ...
 
-const result = await multiply(3, 7);
+generateThumbnail(videoPath: string, resultPath: string,position: string,width: string,height: string)
+      .then((result) => {
+        console.log('result', result);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+
+cleanNoise(videoPath: string,resultPath: string)
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+editVideo(videoPath: string,resultPath: string)
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+getResultPath(videoPath: string)
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+concatVideos(videoUris: string[],resultPath: string)
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+encodeVideo(videoUri: string,resultPath: string,config: string)
+       .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+getVideoInfo(videoPath: string)
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+compareVideos(videoUris: string[])
+      .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
+mergeVideos( videoUris: string[],resultPath: string,config: string)
+       .then((result) => {
+              console.log('result', result);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            });
+
 ```
 
 
