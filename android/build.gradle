@@ -5,6 +5,11 @@ buildscript {
   repositories {
     google()
     mavenCentral()
+     // Add this specific repository for FFmpegKit
+        maven { url 'https://packages.arthenica.com/snapshots' }
+
+        // Also add these for broader search
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
   }
 
   dependencies {
@@ -95,10 +100,13 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "com.github.Truvideo:truvideo-sdk-android-video:76.2.5"
+  implementation "com.github.Truvideo:truvideo-sdk-android-video:78.1.7"
   implementation 'androidx.appcompat:appcompat:1.7.0'
   implementation 'com.google.android.material:material:1.12.0'
-
+  implementation 'com.russhwolf:multiplatform-settings:1.1.1'
+  implementation 'org.kodein.di:kodein-di:7.20.2'
+  implementation 'org.kodein.di:kodein-di-framework-android-x:7.20.2'
+  implementation 'org.jetbrains.kotlinx:kotlinx-datetime:0.4.1'
   implementation 'androidx.activity:activity:1.9.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
   implementation 'com.google.code.gson:gson:2.10.1'

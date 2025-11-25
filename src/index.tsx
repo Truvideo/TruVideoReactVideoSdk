@@ -57,8 +57,16 @@ export function encodeVideo(
  * @param {string} videoPath - The path of the video for which to retrieve information.
  * @return {Promise<string>} A Promise that resolves to the information about the video.
  */
-export function getVideoInfo(videoPath: string): Promise<string> {
-  return TruVideoReactVideoSdk.getVideoInfo(videoPath);
+export function getVideoInfo(videoPath: string): Promise<MediaInfo | null> {
+  return TruVideoReactVideoSdk.getVideoInfo(videoPath).then((response: string) => {
+      try {
+        const parsed: MediaInfo = JSON.parse(response);
+        return parsed;
+      } catch (e) {
+        console.error("Failed to parse MediaData JSON:", e);
+        return null;
+      }
+    });
 }
 
 /**
@@ -67,8 +75,16 @@ export function getVideoInfo(videoPath: string): Promise<string> {
  * @param {string[]} videoUris - An array of video URIs to compare.
  * @return {Promise<string>} A promise that resolves with the result of the comparison.
  */
-export function compareVideos(videoUris: string[]): Promise<string> {
-  return TruVideoReactVideoSdk.compareVideos(videoUris);
+export async function compareVideos(videoPath: string[]): Promise<Boolean> {
+  return TruVideoReactVideoSdk.compareVideos(videoPath).then((response: string) => {
+      try {
+        const parsed: Boolean = JSON.parse(response);
+        return parsed;
+      } catch (e) {
+        console.error("Failed to parse MediaData JSON:", e);
+        return false;
+      }
+    });
 }
 
 /**
@@ -121,32 +137,352 @@ export function generateThumbnail(
  * @return {Promise<string>} A Promise that resolves to the path of the cleaned video file.
  */
 export function cleanNoise(
-  videoPath: string,
+  videoUri: string,
   resultPath: string
 ): Promise<string> {
-  return TruVideoReactVideoSdk.cleanNoise(videoPath, resultPath);
+  return TruVideoReactVideoSdk.cleanNoise(videoUri, resultPath);
 }
 
-/**
- * Edits a video and saves the result to a specified path.
- *
- * @param {string} videoUri - The URI of the video to be edited.
- * @param {string} resultPath - The path where the edited video will be saved.
- * @return {Promise<string>} A Promise that resolves to the path of the edited video.
- */
+
+// Define a class for the VideoTrack
+export interface VideoTrack {
+  index : string;
+  width : string;
+  height : string;
+  rotatedWidth : string;
+  rotatedHeight : string;
+  codec : string;
+  codecTag : string;
+  pixelFormat : string;
+  bitRate : string;
+  frameRate : string;
+  rotation : string;
+  durationMillis : string;
+}
+ 
+// Define a class for the AudioTrack
+export interface AudioTrack {
+  index: string;
+  bitRate: string;
+  sampleRate: string;
+  channels: string;
+  codec: string;
+  codecTag: string;
+  durationMillis: string;
+  channelLayout: string;
+  sampleFormat: string;
+}
+ 
+// Define a class for the main response data
+export interface MediaInfo {
+  path : string;
+  size : number;
+  durationMillis : number;
+  format : string;
+  videoTracks : VideoTrack[];
+  audioTracks : AudioTrack[];
+}
+ 
+export enum VideoStatus {
+  processing = 'processing',
+  completed = 'complete',
+  idle = 'idle',
+  cancel = 'cancelled',
+  error = 'error',
+}
+ 
+
+
+ 
+export async function getAllRequest(status? : VideoStatus): Promise<BuilderResponse[] | null> {
+  return TruVideoReactVideoSdk.getAllRequest(status ? status : "").then((response: string) => {
+      try {
+        const parsed: BuilderResponse[] = JSON.parse(response);
+        return parsed;
+      } catch (e) {
+        console.error("Failed to parse MediaData JSON:", e);
+        return null;
+      }
+    });;
+}
+ 
+export async function getRequestById(id: string): Promise<BuilderResponse | null> {
+  return TruVideoReactVideoSdk.getRequestById(id).then((response: string) => {
+      try {
+        const parsed: BuilderResponse = JSON.parse(response);
+        return parsed;
+      } catch (e) {
+        console.error("Failed to parse MediaData JSON:", e);
+        return null;
+      }
+    });;
+}
+ 
+
+ 
 export function editVideo(
   videoUri: string,
   resultPath: string
 ): Promise<string> {
   return TruVideoReactVideoSdk.editVideo(videoUri, resultPath);
 }
-
-/**
- * Gets the result path for the provided path.
- *
- * @param {string} path - The path for which to get the result path.
- * @return {Promise<string>} A Promise that resolves to the result path.
- */
-export function getResultPath(path: string): Promise<string> {
-  return TruVideoReactVideoSdk.getResultPath(path);
+export function getResultPath(videoPath: string): Promise<string> {
+  return TruVideoReactVideoSdk.getResultPath(videoPath);
 }
+ 
+
+ 
+export enum FrameRate {
+  twentyFourFps = 'twentyFourFps',
+  twentyFiveFps = 'twentyFiveFps',
+  thirtyFps = 'thirtyFps',
+  fiftyFps = 'fiftyFps',
+  sixtyFps = 'sixtyFps',
+}
+ 
+export enum BuilderType {
+  merge = 'merge',
+  concat = 'concat',
+  encode = 'encode',
+}
+ 
+export interface BuilderResponse {
+  id: string;
+  createdAt: string;
+  status: VideoStatus;
+  type: BuilderType;
+  updatedAt: string;
+}
+ 
+export class MergeBuilder {
+  private _filePath: string[];
+  private resultPath: string;
+  private height: string = '';
+  private width: string = '';
+  private frameRate: string = '';
+  private mergeData: BuilderResponse | undefined;
+ 
+  constructor(filePaths: string[], resultPath: string) {
+    if (!filePaths) {
+      throw new Error('filePath is required for MediaBuilder.');
+    }
+    if (!resultPath) {
+      throw new Error('resultPath is required for MediaBuilder.');
+    }
+    this._filePath = filePaths;
+    this.resultPath = resultPath;
+  }
+ 
+  setHeight(height: number): MergeBuilder {
+    this.height = '' + height;
+    return this;
+  }
+ 
+  setWigth(width: number): MergeBuilder {
+    this.width = '' + width;
+    return this;
+  }
+ 
+  setFrameRate(frameRate: FrameRate) {
+    if (frameRate == FrameRate.fiftyFps) {
+      this.frameRate = 'fiftyFps';
+    } else if (frameRate == FrameRate.sixtyFps) {
+      this.frameRate = 'sixtyFps';
+    } else if (frameRate == FrameRate.twentyFourFps) {
+      this.frameRate = 'twentyFourFps';
+    } else if (frameRate == FrameRate.twentyFiveFps) {
+      this.frameRate = 'twentyFiveFps';
+    } else if (frameRate == FrameRate.thirtyFps) {
+      this.frameRate = 'thirtyFps';
+    } else {
+      this.frameRate = 'fiftyFps';
+    }
+  }
+ 
+  async build(): Promise<MergeBuilder> {
+    const config = {
+      height: this.height,
+      width: this.width,
+      framesRate: this.frameRate,
+    };
+ 
+    var response = await TruVideoReactVideoSdk.mergeVideos(
+      this._filePath,
+      this.resultPath,
+      JSON.stringify(config)
+    );
+    this.mergeData = JSON.parse(response);
+    return this;
+  }
+ 
+  async process(): Promise<BuilderResponse> {
+    if (!this.mergeData?.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling process().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.processVideo(
+      this.mergeData.id
+    );
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
+  }
+ 
+  async cancel(): Promise<BuilderResponse> {
+    if (!this.mergeData?.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling cancel().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.cancelVideo(
+      this.mergeData.id
+    );
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
+  }
+}
+ 
+export class ConcatBuilder {
+  private _filePath: string[];
+  private resultPath: string;
+  private concatData: BuilderResponse | undefined;
+ 
+  constructor(filePaths: string[], resultPath: string) {
+    if (!filePaths) {
+      throw new Error('filePath is required for ConcatBuilder.');
+    }
+    if (!resultPath) {
+      throw new Error('resultPath is required for ConcatBuilder.');
+    }
+    this._filePath = filePaths;
+    this.resultPath = resultPath;
+  }
+ 
+  async build(): Promise<ConcatBuilder> {
+    var response = await TruVideoReactVideoSdk.concatVideos(
+      this._filePath,
+      this.resultPath
+    );
+    this.concatData = JSON.parse(response);
+    return this;
+  }
+ 
+  async process(): Promise<BuilderResponse> {
+    if (!this.concatData?.id) {
+      throw new Error(
+        'concatData.id is undefined. Call build() and ensure it succeeds before calling process().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.processVideo(
+      this.concatData.id
+    );
+    this.concatData = JSON.parse(response) as BuilderResponse;
+    return this.concatData;
+  }
+ 
+  async cancel(): Promise<BuilderResponse> {
+    if (!this.concatData?.id) {
+      throw new Error(
+        'concatData.id is undefined. Call build() and ensure it succeeds before calling cancel().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.cancelVideo(
+      this.concatData.id
+    );
+    this.concatData = JSON.parse(response) as BuilderResponse;
+    return this.concatData;
+  }
+}
+ 
+export class EncodeBuilder {
+  private _filePath: string;
+  private resultPath: string;
+  private height: string = '';
+  private width: string = '';
+  private frameRate: string = '';
+  private mergeData: BuilderResponse | undefined;
+ 
+  constructor(filePaths: string, resultPath: string) {
+    if (!filePaths) {
+      throw new Error('filePath is required for EncodeBuilder.');
+    }
+    if (!resultPath) {
+      throw new Error('resultPath is required for EncodeBuilder.');
+    }
+    this._filePath = filePaths;
+    this.resultPath = resultPath;
+  }
+ 
+  setHeight(height: number): EncodeBuilder {
+    this.height = '' + height;
+    return this;
+  }
+ 
+  setWidth(width: number): EncodeBuilder {
+    this.width = '' + width;
+    return this;
+  }
+ 
+  setFrameRate(frameRate: FrameRate) {
+    if (frameRate == FrameRate.fiftyFps) {
+      this.frameRate = 'fiftyFps';
+    } else if (frameRate == FrameRate.sixtyFps) {
+      this.frameRate = 'sixtyFps';
+    } else if (frameRate == FrameRate.twentyFourFps) {
+      this.frameRate = 'twentyFourFps';
+    } else if (frameRate == FrameRate.twentyFiveFps) {
+      this.frameRate = 'twentyFiveFps';
+    } else if (frameRate == FrameRate.thirtyFps) {
+      this.frameRate = 'thirtyFps';
+    } else {
+      this.frameRate = 'fiftyFps';
+    }
+  }
+ 
+  async build(): Promise<EncodeBuilder> {
+    const config = {
+      height: this.height,
+      width: this.width,
+      framesRate: this.frameRate,
+    };
+ 
+    var response = await TruVideoReactVideoSdk.encodeVideo(
+      this._filePath,
+      this.resultPath,
+      JSON.stringify(config)
+    );
+    this.mergeData = JSON.parse(response);
+    return this;
+  }
+ 
+  async process(): Promise<BuilderResponse> {
+    if (!this.mergeData?.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling process().'
+      );
+    }
+    // process video
+    var response = await TruVideoReactVideoSdk.processVideo(
+      this.mergeData.id
+    );
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
+  }
+ 
+  async cancel(): Promise<BuilderResponse> {
+    if (!this.mergeData?.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling cancel().'
+      );
+    }
+    // cancel video
+    var response = await TruVideoReactVideoSdk.cancelVideo(
+      this.mergeData.id
+    );
+ 
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
+  }
+}
+ 
+

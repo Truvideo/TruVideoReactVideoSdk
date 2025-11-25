@@ -12452,8 +12452,19 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     react: 18.2.0
     react-native: 0.74.3
+    truvideo-react-video-sdk: ./..
   languageName: unknown
   linkType: soft
+
+"truvideo-react-video-sdk@file:./..::locator=truvideo-react-video-sdk-example%40workspace%3Aexample":
+  version: 0.1.0
+  resolution: "truvideo-react-video-sdk@file:./..#./..::hash=af57f8&locator=truvideo-react-video-sdk-example%40workspace%3Aexample"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 9d09fa15621aabbb464c0bdce9acb1dd24f0b15b7edecbc1c8a584e9fc3306b8176504bbced4ccc97b74f099653a089d22c51d783bd15a60c2680e5d9a1f0bf5
+  languageName: node
+  linkType: hard
 
 "truvideo-react-video-sdk@workspace:.":
   version: 0.0.0-use.local
