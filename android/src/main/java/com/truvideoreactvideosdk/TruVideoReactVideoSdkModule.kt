@@ -334,19 +334,22 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
 
   }
 
-  @ReactMethod
-  fun editVideo(videoUri: String?, resultPath: String?, promise: Promise?) {
+@ReactMethod
+fun editVideo(videoUri: String?, resultPath: String?, promise: Promise?) {
     if (videoUri!!.endsWith(".png") || videoUri.endsWith(".jpg") || videoUri.endsWith(".jpeg")) {
       promise?.resolve("video path must be video not image")
       return
     }
     mainPromise = promise
-    currentActivity!!.startActivity(
-      Intent(
-        currentActivity,
-        EditScreenActivity::class.java
-      ).putExtra("videoUri", videoUri).putExtra("resultPath", resultPath)
-    )
+    val activity = reactApplicationContext.currentActivity
+    if (activity != null) {
+        val intent = Intent(activity, EditScreenActivity::class.java)
+        intent.putExtra("videoUri", videoUri)
+        intent.putExtra("resultPath", resultPath)
+        activity.startActivity(intent)
+    } else {
+        promise?.reject("E_ACTIVITY_DOES_NOT_EXIST", "Activity doesn't exist")
+    }
   }
 
   fun videoFile(inputPath: String): TruvideoSdkVideoFile {
@@ -556,7 +559,7 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun getResultPath(path: String?, promise: Promise?) {
-    val basePath = currentActivity!!.filesDir
+    val basePath = reactApplicationContext.filesDir
     promise?.resolve(File("$basePath/camera/$path").path)
   }
 
