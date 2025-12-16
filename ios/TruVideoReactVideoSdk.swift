@@ -439,7 +439,7 @@ class TruVideoReactVideoSdk: NSObject {
       }
     }
     
-  @objc(getAllRequest:withRejecter:withOutput:)
+    @objc(getAllRequest:withResolver:withRejecter:)
     public func getAllRequest(status : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
       var cancellables = Set<AnyCancellable>()
       var statusData : TruvideoSdkVideoRequest.Status?
@@ -474,8 +474,8 @@ class TruVideoReactVideoSdk: NSObject {
       
     }
     
-    @objc(getRequestById:withOutput:withConfig:)
-  public func getRequestById(id : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+    @objc(getRequestById:withResolver:withRejecter:)
+    public func getRequestById(id : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
       var cancellables = Set<AnyCancellable>()
       do {
         let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
@@ -521,29 +521,29 @@ class TruVideoReactVideoSdk: NSObject {
       }
     }
     
-  @objc(process:withResolve:withReject:)
-  public func process(id : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-          publisher
-              .sink { videoRequest in
-                  // Handle each emitted TruvideoSdkVideoRequest
-                Task{
-                  do {
-                    var data = try await videoRequest.process()
-                    resolve(self.sendRequest(videoRequest: videoRequest))
-                    cancellables.removeAll()
-                  }catch{
-                    
+    @objc(processVideo:withResolve:withReject:)  // ← Changed to "processVideo"
+    public func processVideo(id : String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        var cancellables = Set<AnyCancellable>()
+        do {
+          let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
+            publisher
+                .sink { videoRequest in
+                    // Handle each emitted TruvideoSdkVideoRequest
+                  Task{
+                    do {
+                      var data = try await videoRequest.process()
+                      resolve(self.sendRequest(videoRequest: videoRequest))
+                      cancellables.removeAll()
+                    }catch{
+                      
+                    }
                   }
                 }
-              }
-              .store(in: &cancellables)
-      } catch {
-          // Handle thrown error from streamRequest
-          print("Failed to create publisher:", error)
-      }
+                .store(in: &cancellables)
+        } catch {
+            // Handle thrown error from streamRequest
+            print("Failed to create publisher:", error)
+        }
     }
     
     
