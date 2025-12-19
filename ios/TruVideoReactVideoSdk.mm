@@ -6,7 +6,7 @@ RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
         withResolver:(RCTPromiseResolveBlock)resolve
         withRejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(compareVideos:(NSArray *)videos 
+RCT_EXTERN_METHOD(compareVideos:(NSArray *)videos
                   withResolver:(RCTPromiseResolveBlock)resolve
                   withRejecter:(RCTPromiseRejectBlock)reject)
 
@@ -38,7 +38,7 @@ RCT_EXTERN_METHOD(mergeVideos:(NSArray *)videos
                   withResolver:(RCTPromiseResolveBlock)resolve
                   withRejecter:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(changeEncoding:(NSString)video
+RCT_EXTERN_METHOD(encodeVideo:(NSString)video
                   withOutput:(NSString)outputURL
                   withConfig:(NSString)config
                   withResolver:(RCTPromiseResolveBlock)resolve

@@ -316,8 +316,8 @@ class TruVideoReactVideoSdk: NSObject {
   
   
   
-  @objc(changeEncoding:withOutput:withConfig:withResolver:withRejecter:)
-  public func changeEncoding(video: String,output: String,config :String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+  @objc(encodeVideo:withOutput:withConfig:withResolver:withRejecter:)
+  public func encodeVideo(video: String,output: String,config :String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
           // Create a EncodingBuilder instance with specified parameters
           Task{
               let videoUrl = self.convertStringToURL(video)
@@ -440,109 +440,131 @@ class TruVideoReactVideoSdk: NSObject {
     }
     
     @objc(getAllRequest:withResolver:withRejecter:)
-    public func getAllRequest(status : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-      var cancellables = Set<AnyCancellable>()
-      var statusData : TruvideoSdkVideoRequest.Status?
-      if (status == "idle"){
-        statusData = .idle
-      }else if(status == "cancelled"){
-        statusData = .cancelled
-      }else if(status == "complete"){
-        statusData = .complete
-      }else if(status == "error"){
-        statusData = .error
-      }else if(status == "processing"){
-        statusData = .processing
-      }else {
-        statusData = nil
-      }
-      
-      let publisher = TruvideoSdkVideo.streamRequests(withStatus: statusData)
-      let dateFormatter = ISO8601DateFormatter()
-  //    let dateFormatter = DateFormatter()
-  //    dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss 'GMT'Z yyyy"
-  //    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    public func getAllRequest(status: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        var cancellables = Set<AnyCancellable>()
+        var statusData: TruvideoSdkVideoRequest.Status?
+        
+        if (status == "idle") {
+            statusData = .idle
+        } else if (status == "cancelled") {
+            statusData = .cancelled
+        } else if (status == "complete") {
+            statusData = .complete
+        } else if (status == "error") {
+            statusData = .error
+        } else if (status == "processing") {
+            statusData = .processing
+        } else {
+            statusData = nil
+        }
+        
+        let publisher = TruvideoSdkVideo.streamRequests(withStatus: statusData)
+        
         publisher
-            .sink { videoRequest in
-                // Handle each emitted TruvideoSdkVideoRequest
-              var jsonString = self.sendRequests(videoRequests: videoRequest)
-              resolve(jsonString)
-              cancellables.removeAll()
-            }
+            .first()  // ✅ Only take the first emission
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        reject("stream_error", "Failed to get requests", error)
+                    }
+                    cancellables.removeAll()
+                },
+                receiveValue: { videoRequest in
+                    let jsonString = self.sendRequests(videoRequests: videoRequest)
+                    resolve(jsonString)
+                }
+            )
             .store(in: &cancellables)
-   
-      
     }
     
     @objc(getRequestById:withResolver:withRejecter:)
-    public func getRequestById(id : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-        let dateFormatter = ISO8601DateFormatter()
-  //      let dateFormatter = DateFormatter()
-  //      dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss 'GMT'Z yyyy"
-  //      dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-          publisher
-              .sink { videoRequest in
-                  // Handle each emitted TruvideoSdkVideoRequest
-                var jsonString = self.sendRequest(videoRequest : videoRequest)
-                resolve(jsonString)
-                cancellables.removeAll()
-              }
-              .store(in: &cancellables)
-   
-      } catch {
-          // Handle thrown error from streamRequest
-          print("Failed to create publisher:", error)
-      }
-    }
-    
-  @objc(cancel:withResolve:withReject:)
-  public func cancel(id : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-          publisher
-              .sink { videoRequest in
-                  // Handle each emitted TruvideoSdkVideoRequest
-                do {
-                  try videoRequest.cancel()
-                  resolve(self.sendRequest(videoRequest: videoRequest))
-                  cancellables.removeAll()
-                }catch{
-                  reject("","",nil)
-                }
-              }
-              .store(in: &cancellables)
-      } catch {
-          // Handle thrown error from streamRequest
-          print("Failed to create publisher:", error)
-      }
-    }
-    
-    @objc(processVideo:withResolve:withReject:)  // ← Changed to "processVideo"
-    public func processVideo(id : String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+    public func getRequestById(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         var cancellables = Set<AnyCancellable>()
+        
         do {
-          let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
+            let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString: id) ?? UUID())
+            
             publisher
-                .sink { videoRequest in
-                    // Handle each emitted TruvideoSdkVideoRequest
-                  Task{
-                    do {
-                      var data = try await videoRequest.process()
-                      resolve(self.sendRequest(videoRequest: videoRequest))
-                      cancellables.removeAll()
-                    }catch{
-                      
+                .first()  // ✅ Only take the first emission
+                .sink(
+                    receiveCompletion: { completion in
+                        if case .failure(let error) = completion {
+                            reject("stream_error", "Failed to get request", error)
+                        }
+                        cancellables.removeAll()
+                    },
+                    receiveValue: { videoRequest in
+                        let jsonString = self.sendRequest(videoRequest: videoRequest)
+                        resolve(jsonString)
                     }
-                  }
-                }
+                )
                 .store(in: &cancellables)
         } catch {
-            // Handle thrown error from streamRequest
-            print("Failed to create publisher:", error)
+            reject("stream_error", "Failed to create publisher", error)
+        }
+    }
+    
+    @objc(cancel:withResolve:withReject:)
+    public func cancel(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        var cancellables = Set<AnyCancellable>()
+        
+        do {
+            let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString: id) ?? UUID())
+            
+            publisher
+                .first()  // ✅ Only take the first emission
+                .sink(
+                    receiveCompletion: { completion in
+                        if case .failure(let error) = completion {
+                            reject("stream_error", "Failed to get request", error)
+                        }
+                        cancellables.removeAll()
+                    },
+                    receiveValue: { videoRequest in
+                        do {
+                            try videoRequest.cancel()
+                            resolve(self.sendRequest(videoRequest: videoRequest))
+                        } catch {
+                            reject("cancel_error", "Failed to cancel request", error)
+                        }
+                    }
+                )
+                .store(in: &cancellables)
+        } catch {
+            reject("stream_error", "Failed to create publisher", error)
+        }
+    }
+    
+    @objc(processVideo:withResolve:withReject:)
+    public func processVideo(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        var cancellables = Set<AnyCancellable>()
+        
+        do {
+            let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString: id) ?? UUID())
+            
+            publisher
+                .first()  // ✅ Only take the first emission
+                .sink(
+                    receiveCompletion: { completion in
+                        if case .failure(let error) = completion {
+                            reject("stream_error", "Failed to get request", error)
+                        }
+                        cancellables.removeAll()
+                    },
+                    receiveValue: { videoRequest in
+                        Task {
+                            do {
+                                _ = try await videoRequest.process()
+                                resolve(self.sendRequest(videoRequest: videoRequest))
+                            } catch {
+                                reject("process_error", "Failed to process video", error)
+                            }
+                        }
+                    }
+                )
+                .store(in: &cancellables)
+        } catch {
+            reject("stream_error", "Failed to create publisher", error)
         }
     }
     
