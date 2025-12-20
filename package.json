@@ -1,6 +1,6 @@
 {
-  "name": "truvideo-react-video-sdk",
-  "version": "0.1.0",
+  "name": "@trunpm/truvideo-react-video-sdk",
+  "version": "1.0.0-beta.1",
   "description": "none",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -47,16 +47,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akshay2801-rgb/TruVideoReactVideoSdk.git"
+    "url": "git+https://github.com/TruVideo/TruVideoReactVideoSdk.git"
   },
-  "author": "Akshay Chouhan <akshay.chouhan@5exceptions.com> (https://github.com/akshay2801-rgb)",
+  "author": "TruVideo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akshay2801-rgb/TruVideoReactVideoSdk/issues"
+    "url": "https://github.com/TruVideo/TruVideoReactVideoSdk/issues"
   },
-  "homepage": "https://github.com/akshay2801-rgb/TruVideoReactVideoSdk#readme",
+  "homepage": "https://github.com/TruVideo/TruVideoReactVideoSdk#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access":"restricted"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",

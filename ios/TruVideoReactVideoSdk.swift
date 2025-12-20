@@ -16,7 +16,7 @@ class TruVideoReactVideoSdk: NSObject {
     
   
    private var requestCancellables: [UUID: AnyCancellable] = [:]
-
+   
   @objc(getResultPath:withResolver:withRejecter:)
   public func getResultPath(path: String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
          let fileManager = FileManager.default
@@ -478,131 +478,129 @@ class TruVideoReactVideoSdk: NSObject {
             .store(in: &cancellables)
     }
     
-  // MARK: - Process Video Request
-@objc(processVideo:withResolve:withReject:)
-public func processVideo(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-    guard let uuid = UUID(uuidString: id) else {
-        reject("INVALID_INPUT", "Invalid id", nil)
-        return
-    }
-    
-    // Prevent double processing
-    if requestCancellables[uuid] != nil {
-        reject("STREAM_IN_USE", "Request is already being processed", nil)
-        return
-    }
-    
-    do {
-        let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
-            .first() // only take the first value
-            .sink(receiveCompletion: { [weak self] completion in
-                // Only handle failures in completion
-                if case .failure(let error) = completion {
-                    self?.requestCancellables.removeValue(forKey: uuid)
-                    reject("STREAM_FAILED", error.localizedDescription, error)
-                }
-            }, receiveValue: { [weak self] videoRequest in
-                guard let self = self else { return }
-                
-                if videoRequest.status == .idle {
-                    // Process only if idle
-                    Task {
-                        do {
-                            try await videoRequest.process()
-                            resolve(self.sendRequest(videoRequest: videoRequest))
-                        } catch {
-                            reject("PROCESS_ERROR", error.localizedDescription, error)
-                        }
-                        // Remove after processing completes
-                        self.requestCancellables.removeValue(forKey: uuid)
-                    }
-                } else {
-                    // If not idle, return current status and cleanup
-                    resolve(self.sendRequest(videoRequest: videoRequest))
-                    self.requestCancellables.removeValue(forKey: uuid)
-                }
-            })
+    // MARK: - Process Video Request
+    @objc(processVideo:withResolve:withReject:)
+    public func processVideo(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        guard let uuid = UUID(uuidString: id) else {
+            reject("INVALID_INPUT", "Invalid id", nil)
+            return
+        }
         
-        // Store the cancellable to keep it alive
-        requestCancellables[uuid] = cancellable
-    } catch {
-        reject("PROCESS_ERROR", "Error creating publisher: \(error.localizedDescription)", error)
-    }
-}
-
-// MARK: - Cancel Video Request
-@objc(cancel:withResolve:withReject:)
-public func cancel(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-    guard let uuid = UUID(uuidString: id) else {
-        reject("INVALID_INPUT", "Invalid id", nil)
-        return
-    }
-    
-    do {
-        let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
-            .first()
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.requestCancellables.removeValue(forKey: uuid)
-                    reject("CANCEL_ERROR", error.localizedDescription, error)
-                }
-            }, receiveValue: { [weak self] videoRequest in
-                guard let self = self else { return }
-                
-                // Cancel only if processing
-                if videoRequest.status == .processing {
-                    do {
-                        try videoRequest.cancel()
-                    } catch {
-                        reject("CANCEL_ERROR", "Failed to cancel: \(error.localizedDescription)", error)
-                        self.requestCancellables.removeValue(forKey: uuid)
-                        return
-                    }
-                }
-                
-                resolve(self.sendRequest(videoRequest: videoRequest))
-                self.requestCancellables.removeValue(forKey: uuid)
-            })
+        // Prevent double processing
+        if requestCancellables[uuid] != nil {
+            reject("STREAM_IN_USE", "Request is already being processed", nil)
+            return
+        }
         
-        requestCancellables[uuid] = cancellable
-    } catch {
-        reject("CANCEL_ERROR", "Error creating publisher: \(error.localizedDescription)", error)
-    }
-}
-
-// MARK: - Get Request By ID
-@objc(getRequestById:withResolver:withRejecter:)
-public func getRequestById(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
-    guard let uuid = UUID(uuidString: id) else {
-        reject("INVALID_INPUT", "Invalid id", nil)
-        return
-    }
-    
-    do {
-        let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
-            .first()
-            .sink(
-                receiveCompletion: { [weak self] completion in
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first() // only take the first value
+                .sink(receiveCompletion: { [weak self] completion in
+                    // Only handle failures in completion
                     if case .failure(let error) = completion {
                         self?.requestCancellables.removeValue(forKey: uuid)
-                        reject("STREAM_ERROR", "Failed to get request", error)
+                        reject("STREAM_FAILED", error.localizedDescription, error)
                     }
-                },
-                receiveValue: { [weak self] videoRequest in
+                }, receiveValue: { [weak self] videoRequest in
                     guard let self = self else { return }
-                    let jsonString = self.sendRequest(videoRequest: videoRequest)
-                    resolve(jsonString)
-                    self.requestCancellables.removeValue(forKey: uuid)
-                }
-            )
-        
-        requestCancellables[uuid] = cancellable
-    } catch {
-        reject("STREAM_ERROR", "Failed to create publisher", error)
+                    
+                    if videoRequest.status == .idle {
+                        // Process only if idle
+                        Task {
+                            do {
+                                try await videoRequest.process()
+                                resolve(self.sendRequest(videoRequest: videoRequest))
+                            } catch {
+                                reject("PROCESS_ERROR", error.localizedDescription, error)
+                            }
+                            // Remove after processing completes
+                            self.requestCancellables.removeValue(forKey: uuid)
+                        }
+                    } else {
+                        // If not idle, return current status and cleanup
+                        resolve(self.sendRequest(videoRequest: videoRequest))
+                        self.requestCancellables.removeValue(forKey: uuid)
+                    }
+                })
+            
+            // Store the cancellable to keep it alive
+            requestCancellables[uuid] = cancellable
+        } catch {
+            reject("PROCESS_ERROR", "Error creating publisher: \(error.localizedDescription)", error)
+        }
     }
-}
-    
-    
+
+    // MARK: - Cancel Video Request
+    @objc(cancel:withResolve:withReject:)
+    public func cancel(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        guard let uuid = UUID(uuidString: id) else {
+            reject("INVALID_INPUT", "Invalid id", nil)
+            return
+        }
+        
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first()
+                .sink(receiveCompletion: { [weak self] completion in
+                    if case .failure(let error) = completion {
+                        self?.requestCancellables.removeValue(forKey: uuid)
+                        reject("CANCEL_ERROR", error.localizedDescription, error)
+                    }
+                }, receiveValue: { [weak self] videoRequest in
+                    guard let self = self else { return }
+                    
+                    // Cancel only if processing
+                    if videoRequest.status == .processing {
+                        do {
+                            try videoRequest.cancel()
+                        } catch {
+                            reject("CANCEL_ERROR", "Failed to cancel: \(error.localizedDescription)", error)
+                            self.requestCancellables.removeValue(forKey: uuid)
+                            return
+                        }
+                    }
+                    
+                    resolve(self.sendRequest(videoRequest: videoRequest))
+                    self.requestCancellables.removeValue(forKey: uuid)
+                })
+            
+            requestCancellables[uuid] = cancellable
+        } catch {
+            reject("CANCEL_ERROR", "Error creating publisher: \(error.localizedDescription)", error)
+        }
+    }
+
+    // MARK: - Get Request By ID
+    @objc(getRequestById:withResolver:withRejecter:)
+    public func getRequestById(id: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        guard let uuid = UUID(uuidString: id) else {
+            reject("INVALID_INPUT", "Invalid id", nil)
+            return
+        }
+        
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first()
+                .sink(
+                    receiveCompletion: { [weak self] completion in
+                        if case .failure(let error) = completion {
+                            self?.requestCancellables.removeValue(forKey: uuid)
+                            reject("STREAM_ERROR", "Failed to get request", error)
+                        }
+                    },
+                    receiveValue: { [weak self] videoRequest in
+                        guard let self = self else { return }
+                        let jsonString = self.sendRequest(videoRequest: videoRequest)
+                        resolve(jsonString)
+                        self.requestCancellables.removeValue(forKey: uuid)
+                    }
+                )
+            
+            requestCancellables[uuid] = cancellable
+        } catch {
+            reject("STREAM_ERROR", "Failed to create publisher", error)
+        }
+    }
   @objc(editVideo:withOutput:withResolver:withRejecter:)
   public func editVideo(video : String,output : String,resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
           DispatchQueue.main.async{
@@ -640,4 +638,3 @@ public func getRequestById(id: String, resolve: @escaping RCTPromiseResolveBlock
   
   
 }
-
