@@ -256,6 +256,47 @@ export interface BuilderResponse {
   updatedAt: string;
 }
 
+
+export class BuilderRequest {
+  id: string;
+  createdAt: string;
+  status: VideoStatus;
+  type: BuilderType;
+  updatedAt: string;
+  data : BuilderResponse;
+  constructor(response : BuilderResponse){
+    this.id = response.id;
+    this.createdAt = response.createdAt;
+    this.status = response.status;
+    this.type = response.type;
+    this.updatedAt = response.updatedAt
+    this.data = response
+  }
+
+  async process(): Promise<BuilderResponse> {
+    if (!this.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling process().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.processVideo(this.id);
+    this.data = JSON.parse(response) as BuilderResponse;
+    return this.data;
+  }
+
+  async cancel(): Promise<BuilderResponse> {
+    if (!this.id) {
+      throw new Error(
+        'Call build() and ensure it succeeds before calling cancel().'
+      );
+    }
+    var response = await TruVideoReactVideoSdk.cancelVideo(this.id);
+    this.data = JSON.parse(response) as BuilderResponse;
+    return this.data;
+  }
+
+}
+
 export class MergeBuilder {
   private _filePath: string[];
   private resultPath: string;
@@ -301,7 +342,7 @@ export class MergeBuilder {
     }
   }
 
-  async build(): Promise<MergeBuilder> {
+  async build(): Promise<BuilderResponse> {
     const config = {
       height: this.height,
       width: this.width,
@@ -313,8 +354,8 @@ export class MergeBuilder {
       this.resultPath,
       JSON.stringify(config)
     );
-    this.mergeData = JSON.parse(response);
-    return this;
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
   }
 
   async process(): Promise<BuilderResponse> {
@@ -356,13 +397,13 @@ export class ConcatBuilder {
     this.resultPath = resultPath;
   }
 
-  async build(): Promise<ConcatBuilder> {
+  async build(): Promise<BuilderResponse> {
     var response = await TruVideoReactVideoSdk.concatVideos(
       this._filePath,
       this.resultPath
     );
-    this.concatData = JSON.parse(response);
-    return this;
+    this.concatData = JSON.parse(response) as BuilderResponse;
+    return this.concatData;
   }
 
   async process(): Promise<BuilderResponse> {
@@ -433,7 +474,7 @@ export class EncodeBuilder {
     }
   }
 
-  async build(): Promise<EncodeBuilder> {
+  async build(): Promise<BuilderResponse> {
     const config = {
       height: this.height,
       width: this.width,
@@ -445,8 +486,8 @@ export class EncodeBuilder {
       this.resultPath,
       JSON.stringify(config)
     );
-    this.mergeData = JSON.parse(response);
-    return this;
+    this.mergeData = JSON.parse(response) as BuilderResponse;
+    return this.mergeData;
   }
 
   async process(): Promise<BuilderResponse> {

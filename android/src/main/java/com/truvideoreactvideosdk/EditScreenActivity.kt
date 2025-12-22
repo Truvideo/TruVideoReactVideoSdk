@@ -28,17 +28,7 @@ class EditScreenActivity : AppCompatActivity() {
         }
         val videoUri = intent.getStringExtra("videoUri")
         val resultPath = intent.getStringExtra("resultPath")
-//        val editScreen = TruvideoSdkVideo.initEditScreen(this)
-        editVideoLauncher = registerForActivityResult(TruvideoSdkVideoEditContract(), { result ->
-          // edited video its on 'resultPath'
-          TruVideoReactVideoSdkModule.mainPromise!!.resolve(result?:"")
-          finish()
-          Log.d("TAG", "editVideo: result=$result")
-        })
 
-        CoroutineScope(Dispatchers.Main).launch {
-            editVideo(videoUri!!,resultPath!!)
-          }
 
 
 
