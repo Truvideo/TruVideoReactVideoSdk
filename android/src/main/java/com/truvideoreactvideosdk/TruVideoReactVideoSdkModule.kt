@@ -24,8 +24,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import truvideo.sdk.common.exceptions.TruvideoSdkException
 import java.io.File
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.CancellationException
 
 class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -181,28 +183,40 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
 
   }
 
-  @ReactMethod
-  fun processVideo(id: String, promise: Promise) {
+    @ReactMethod
+    fun processVideo(id: String, promise: Promise) {
+        try {
+            scope.launch {
+                try {
+                    val request = TruvideoSdkVideo.getRequestById(id)
 
-    try {
+                    if (request == null) {
+                        promise.reject("REQUEST_NOT_FOUND", "Request not found")
+                        return@launch
+                    }
 
-      scope.launch {
+                    request.process()
+                    promise.resolve(returnRequest(request))
 
-        val request = TruvideoSdkVideo.getRequestById(id)
-
-        request!!.process()
-
-        promise.resolve(returnRequest(request))
-
-      }
-
-    } catch (e: Exception) {
-
-      promise.reject("Exception", e.message)
-
+                } catch (e: TruvideoSdkException) {
+                    // Handle SDK-specific exceptions (like cancellation)
+                    when {
+                        e.message?.contains("canceled", ignoreCase = true) == true -> {
+                            promise.reject("REQUEST_CANCELLED", "Request was cancelled during processing")
+                        }
+                        else -> {
+                            promise.reject("SDK_EXCEPTION", e.message ?: "SDK error occurred")
+                        }
+                    }
+                } catch (e: CancellationException) {
+                    // Handle coroutine cancellation
+                    promise.reject("REQUEST_CANCELLED", "Request was cancelled")
+                }
+            }
+        } catch (e: Exception) {
+            promise.reject("EXCEPTION", e.message ?: "Unknown error")
+        }
     }
-
-  }
 
   fun delete(id: String, promise: Promise) {
     try {
@@ -217,28 +231,35 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
-  @ReactMethod
-  fun cancelVideo(id: String, promise: Promise) {
+    @ReactMethod
+    fun cancelVideo(id: String, promise: Promise) {
+        try {
+            scope.launch {
+                val request = TruvideoSdkVideo.getRequestById(id)
 
-    try {
+                if (request == null) {
+                    promise.reject("REQUEST_NOT_FOUND", "Request not found")
+                    return@launch
+                }
 
-      scope.launch {
+                // Check if request can be cancelled
+                val status = request.status
+                if (status == TruvideoSdkVideoRequestStatus.COMPLETE ||
+                    status == TruvideoSdkVideoRequestStatus.CANCELLED ||
+                    status == TruvideoSdkVideoRequestStatus.ERROR) {
+                    promise.reject("CANNOT_CANCEL", "Request with status ${status.name} cannot be cancelled")
+                    return@launch
+                }
 
-        val request = TruvideoSdkVideo.getRequestById(id)
-
-        request!!.cancel()
-
-        promise.resolve(returnRequest(request))
-
-      }
-
-    } catch (e: Exception) {
-
-      promise.reject("Exception", e.message)
-
+                request.cancel()
+                promise.resolve(returnRequest(request))
+            }
+        } catch (e: TruvideoSdkException) {
+            promise.reject("SDK_EXCEPTION", e.message ?: "Cannot cancel request")
+        } catch (e: Exception) {
+            promise.reject("Exception", e.message)
+        }
     }
-
-  }
   fun returnRequest(request: TruvideoSdkVideoRequest): String {
     return JSONObject().apply {
 
