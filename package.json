@@ -1,6 +1,6 @@
 {
-  "name": "@trunpm/truvideo-react-video-sdk",
-  "version": "1.0.0-beta.1",
+  "name": "truvideo-react-video-sdk",
+  "version": "1.0.0",
   "description": "none",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -57,7 +57,7 @@
   "homepage": "https://github.com/TruVideo/TruVideoReactVideoSdk#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "access":"restricted"
+    "access": "restricted"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
