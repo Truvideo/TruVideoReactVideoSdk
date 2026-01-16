@@ -1,6 +1,8 @@
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("com.facebook.react")
+}
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -9,9 +11,9 @@ apply plugin: "com.facebook.react"
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
-    // root = file("../")
+    root = file("../../")
     //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
-    // reactNativeDir = file("../node_modules/react-native")
+    reactNativeDir = file("../../node_modules/react-native")
     //   The folder where the react-native Codegen package is. Default is ../node_modules/@react-native/codegen
     // codegenDir = file("../node_modules/@react-native/codegen")
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../node_modules/react-native/cli.js
@@ -81,6 +83,19 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        
+        // Enable multidex to support large number of methods
+        multiDexEnabled true
+        
+        // Explicitly set newArchEnabled based on gradle.properties to ensure BuildConfig matches
+        // This prevents issues where the React Native Gradle plugin might not read the property correctly
+        // Read the property directly from gradle.properties to ensure we get the correct value
+        def newArchEnabled = project.hasProperty("newArchEnabled") && project.property("newArchEnabled") == "true" ||
+                            rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "${newArchEnabled}"
+        
+        // Log the value for debugging
+        println "MainApplication BuildConfig.IS_NEW_ARCHITECTURE_ENABLED will be set to: ${newArchEnabled}"
     }
     signingConfigs {
         debug {
@@ -102,6 +117,14 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    
+    packaging {
+        // Ensure kotlin-stdlib is included in the APK
+        resources {
+            pickFirsts += ['**/kotlin-stdlib*.jar', '**/kotlin-stdlib-jdk*.jar']
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/license.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/notice.txt', 'META-INF/ASL2.0', 'META-INF/*.kotlin_module']
+        }
+    }
 }
 
 dependencies {
@@ -113,6 +136,41 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
+    // Multidex support
+    implementation 'androidx.multidex:multidex:2.0.1'
+    
+    // Kotlin stdlib 2.1.0+ required for kotlin.time.Clock.System and other time APIs
+    // Explicitly add as implementation to ensure it's included in the APK
+    // The resolutionStrategy in build.gradle will force this version across all dependencies
+    // IMPORTANT: Add kotlin-stdlib FIRST to ensure it gets priority in DEX merging
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlinVersion}"
+    
+    // Kodein DI dependencies required by Truvideo SDK
+    // Using version 7.30.0 which includes the importAll method required by the SDK
+    implementation "org.kodein.di:kodein-di:7.30.0"
+    implementation "org.kodein.di:kodein-di-framework-android-x:7.30.0"
+    
+    // Explicitly add the local truvideo-react-video-sdk module
+    implementation project(':truvideo-react-video-sdk')
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+// Autolinking is handled by the React Native settings plugin in settings.gradle
+// apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+// Exclude the duplicate trunpm_truvideo-react-video-sdk project from node_modules
+// to prevent duplicate BuildConfig class errors when using local development setup
+afterEvaluate {
+    // Remove the duplicate project dependency if it exists
+    project.configurations.all { config ->
+        config.dependencies.removeAll { dep ->
+            if (dep instanceof ProjectDependency) {
+                def projectPath = dep.dependencyProject.path
+                return projectPath == ':trunpm_truvideo-react-video-sdk'
+            }
+            return false
+        }
+    }
+}

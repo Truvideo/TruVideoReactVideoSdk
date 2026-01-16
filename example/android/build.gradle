@@ -2,20 +2,42 @@ buildscript {
     ext {
         buildToolsVersion = "34.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 34
-        targetSdkVersion = 34
+        compileSdkVersion = 36
+        targetSdkVersion = 36
         ndkVersion = "26.1.10909125"
-        kotlinVersion = "1.9.22"
+        kotlinVersion = "2.1.20"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("com.android.tools.build:gradle:8.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
-apply plugin: "com.facebook.react.rootproject"
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            // Force Kotlin stdlib 2.1.0+ for Clock.System support
+            // Now that React Native 0.83.1 supports Kotlin 2.1.0, we can use matching compiler and stdlib versions
+            // This ensures all transitive dependencies use the same Kotlin stdlib version
+            force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+            // Force Kodein DI version to prevent version conflicts with Truvideo SDK
+            // Using version 7.30.0 which includes the importAll method required by the SDK
+            force "org.kodein.di:kodein-di:7.30.0"
+            force "org.kodein.di:kodein-di-framework-android-x:7.30.0"
+        }
+    }
+}
+
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += ['-Xskip-metadata-version-check']
+        }
+    }
+}
