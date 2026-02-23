@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* TruVideoReactVideoSdkExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TruVideoReactVideoSdkExampleTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-TruVideoReactVideoSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-TruVideoReactVideoSdkExample.a */; };
+		046699342F45E9D30058DF21 /* TruvideoSdk in Frameworks */ = {isa = PBXBuildFile; productRef = 046699332F45E9D30058DF21 /* TruvideoSdk */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		180D78E52D10083C009CCC84 /* TruvideoSdk in Frameworks */ = {isa = PBXBuildFile; productRef = 180D78E42D10083C009CCC84 /* TruvideoSdk */; };
-		7699B88040F8A987B510C191 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */; };
+		30C59FFBD4482B17DF6D0ACA /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DFC5689FB3AE6F73F514C2 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A2FED7D9891787772BE55C40 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B8459FAAC9269181D7DFDBA8 /* PrivacyInfo.xcprivacy */; };
+		FB9FE371607EAFCAA54DC541 /* libPods-TruVideoReactVideoSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 399D1CEABE3ABAE1B96B5B2C /* libPods-TruVideoReactVideoSdkExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,15 +39,15 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TruVideoReactVideoSdkExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TruVideoReactVideoSdkExample/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = TruVideoReactVideoSdkExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample.release.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-TruVideoReactVideoSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TruVideoReactVideoSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		25A6698E476CBF12ACA257D7 /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
+		399D1CEABE3ABAE1B96B5B2C /* libPods-TruVideoReactVideoSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TruVideoReactVideoSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C57B24FB94720777BB4CE80 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		47657465284CB10D05377337 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TruVideoReactVideoSdkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		B8459FAAC9269181D7DFDBA8 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = TruVideoReactVideoSdkExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D5153504B9FEA52DB9B66C34 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruVideoReactVideoSdkExample.release.xcconfig"; path = "Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F9DFC5689FB3AE6F73F514C2 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a in Frameworks */,
+				30C59FFBD4482B17DF6D0ACA /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,8 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-TruVideoReactVideoSdkExample.a in Frameworks */,
-				180D78E52D10083C009CCC84 /* TruvideoSdk in Frameworks */,
+				FB9FE371607EAFCAA54DC541 /* libPods-TruVideoReactVideoSdkExample.a in Frameworks */,
+				046699342F45E9D30058DF21 /* TruvideoSdk in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,8 +107,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-TruVideoReactVideoSdkExample.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */,
+				399D1CEABE3ABAE1B96B5B2C /* libPods-TruVideoReactVideoSdkExample.a */,
+				F9DFC5689FB3AE6F73F514C2 /* libPods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,10 +147,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */,
+				25A6698E476CBF12ACA257D7 /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */,
+				D5153504B9FEA52DB9B66C34 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */,
+				47657465284CB10D05377337 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */,
+				3C57B24FB94720777BB4CE80 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -162,12 +162,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TruVideoReactVideoSdkExampleTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				A7E325CA8BD00A84ECCF44F6 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				4AD9F575B803948CB665142A /* [CP] Embed Pods Frameworks */,
+				A83DD3F14D529234DF8943CB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -183,13 +183,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TruVideoReactVideoSdkExample" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				F539E1304F95985F6BC0B020 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				C91234C26858E7812F15A15B /* [CP] Embed Pods Frameworks */,
+				A711AE1DD009447D0BFA60FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -197,7 +197,7 @@
 			);
 			name = TruVideoReactVideoSdkExample;
 			packageProductDependencies = (
-				180D78E42D10083C009CCC84 /* TruvideoSdk */,
+				046699332F45E9D30058DF21 /* TruvideoSdk */,
 			);
 			productName = TruVideoReactVideoSdkExample;
 			productReference = 13B07F961A680F5B00A75B9A /* TruVideoReactVideoSdkExample.app */;
@@ -230,7 +230,7 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				180D78E32D10083C009CCC84 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */,
+				046699322F45E9D30058DF21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -277,26 +277,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "set -e\n\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"\n\nexport NODE_BINARY=\"$NVM_DIR/versions/node/v22.14.0/bin/node\"\n\nexport PROJECT_ROOT=\"${SRCROOT}/..\"\nexport REACT_NATIVE_PATH=\"${PROJECT_ROOT}/node_modules/react-native\"\n\n\"$NODE_BINARY\" -v\n\nWITH_ENVIRONMENT=\"${REACT_NATIVE_PATH}/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"${REACT_NATIVE_PATH}/scripts/react-native-xcode.sh\"\n\n/bin/sh \"$WITH_ENVIRONMENT\" \"$REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		4AD9F575B803948CB665142A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		A711AE1DD009447D0BFA60FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A7E325CA8BD00A84ECCF44F6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -318,7 +343,49 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		A83DD3F14D529234DF8943CB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C91234C26858E7812F15A15B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F539E1304F95985F6BC0B020 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -338,57 +405,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample/Pods-TruVideoReactVideoSdkExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests/Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -424,7 +440,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */;
+			baseConfigurationReference = 47657465284CB10D05377337 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -451,7 +467,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */;
+			baseConfigurationReference = 3C57B24FB94720777BB4CE80 /* Pods-TruVideoReactVideoSdkExample-TruVideoReactVideoSdkExampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -475,12 +491,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */;
+			baseConfigurationReference = 25A6698E476CBF12ACA257D7 /* Pods-TruVideoReactVideoSdkExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AKRSR3D9R9;
+				DEVELOPMENT_TEAM = 83D7RPYBY6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TruVideoReactVideoSdkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -503,12 +519,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */;
+			baseConfigurationReference = D5153504B9FEA52DB9B66C34 /* Pods-TruVideoReactVideoSdkExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AKRSR3D9R9;
+				DEVELOPMENT_TEAM = 83D7RPYBY6;
 				INFOPLIST_FILE = TruVideoReactVideoSdkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -592,6 +608,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -600,12 +617,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
+				OTHER_LDFLAGS = "$(inherited)  ";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -667,6 +682,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -675,11 +691,8 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
+				OTHER_LDFLAGS = "$(inherited)  ";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
@@ -719,20 +732,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		180D78E32D10083C009CCC84 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */ = {
+		046699322F45E9D30058DF21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Truvideo/truvideo-sdk-ios-core";
+			repositoryURL = "https://github.com/Truvideo/truvideo-sdk-ios-core.git";
 			requirement = {
-				kind = exactVersion;
-				version = 76.2.1;
+				kind = upToNextMajorVersion;
+				minimumVersion = 78.2.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		180D78E42D10083C009CCC84 /* TruvideoSdk */ = {
+		046699332F45E9D30058DF21 /* TruvideoSdk */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 180D78E32D10083C009CCC84 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */;
+			package = 046699322F45E9D30058DF21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-core" */;
 			productName = TruvideoSdk;
 		};
 /* End XCSwiftPackageProductDependency section */

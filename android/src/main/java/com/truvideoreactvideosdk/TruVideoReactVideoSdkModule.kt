@@ -581,7 +581,7 @@ fun editVideo(videoUri: String?, resultPath: String?, promise: Promise?) {
   @ReactMethod
   fun getResultPath(path: String?, promise: Promise?) {
     val basePath = reactApplicationContext.filesDir
-    promise?.resolve(File("$basePath/camera/$path").path)
+    promise?.resolve(File("$basePath/$path").path)
   }
 
 
