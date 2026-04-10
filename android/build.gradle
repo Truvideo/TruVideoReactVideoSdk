@@ -120,7 +120,7 @@ dependencies {
   api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
   // Exclude any kotlin-stdlib from Truvideo SDK to ensure our version is used
-  implementation("com.github.Truvideo:truvideo-sdk-android-video:79.1.2") {
+  implementation("com.github.Truvideo:truvideo-sdk-android-video:79.1.4") {
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
