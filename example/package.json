@@ -13,7 +13,7 @@
   "dependencies": {
     "react": "18.3.1",
     "react-native": "0.83.1",
-    "truvideo-react-video-sdk": "portal:../"
+    "truvideo-react-video-sdk": "./../"
   },
   "devDependencies": {
     "@babel/core": "^7.25.0",
