@@ -1,4 +1,12 @@
 PODS:
+  - AWSCognitoIdentityProvider (2.41.0):
+    - AWSCognitoIdentityProviderASF (= 2.41.0)
+    - AWSCore (= 2.41.0)
+  - AWSCognitoIdentityProviderASF (2.41.0):
+    - AWSCore (= 2.41.0)
+  - AWSCore (2.41.0)
+  - AWSS3 (2.41.0):
+    - AWSCore (= 2.41.0)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - fast_float (8.0.0)
@@ -2477,9 +2485,19 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - SocketRocket
-    - truvideo-sdk-video
+    - truvideo-sdk-core/Video (= 79.0.1)
     - Yoga
-  - truvideo-sdk-video (78.1.1)
+  - truvideo-sdk-core/Core (79.0.1):
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSS3
+  - truvideo-sdk-core/Video (79.0.1):
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSS3
+    - truvideo-sdk-core/Core
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2566,8 +2584,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSS3
     - SocketRocket
-    - truvideo-sdk-video
+    - truvideo-sdk-core
 
 EXTERNAL SOURCES:
   boost:
@@ -2729,13 +2751,17 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AWSCognitoIdentityProvider: b7e2471bec75137ce392b9a8c60f3cee465c61bd
+  AWSCognitoIdentityProviderASF: d26fedd80485c2f0f308741e02c4a9093921ad22
+  AWSCore: ee7594bda3132cde8666328bf9a09d8770c1c100
+  AWSS3: 50da7408a26c1c2886d02968807f2a0b6bf936ca
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBLazyVector: 309703e71d3f2f1ed7dc7889d58309c9d77a95a4
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
-  hermes-engine: 51900a190e05c9b86debb3aa0092020789e65dc8
+  hermes-engine: 5aadf344c4dd32f2805b4860eb16fe9b7c57ccc8
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: a41bbdd9af30bf2e5715796b313e44ec43eefff1
   RCTRequired: 7be34aabb0b77c3cefe644528df0fa0afad4e4d0
@@ -2806,10 +2832,10 @@ SPEC CHECKSUMS:
   ReactCodegen: 5ddfb5f4fb857c0c29ea7bab02a682fc9b1f5ba7
   ReactCommon: 05ad684db7d88e194272ae26baddf6300e30b8b7
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  truvideo-react-video-sdk: af438f16607f5316db889178da551de3440f1d75
-  truvideo-sdk-video: cf774e10c4f90ef5fad7fb35d1b9aee89b6f18bd
+  truvideo-react-video-sdk: a1cc27b7a51e8e0b8a5d798d5d3f85a46ce295b8
+  truvideo-sdk-core: c99cf00dc51fb0bf648a820161a0483bb9a491a2
   Yoga: 5456bb010373068fc92221140921b09d126b116e
 
-PODFILE CHECKSUM: 9433200fe14e1f042eb65a49c909ec6e577f6513
+PODFILE CHECKSUM: 1ae01c5308370acbb9352dfa51aa06824ea1762f
 
 COCOAPODS: 1.16.2

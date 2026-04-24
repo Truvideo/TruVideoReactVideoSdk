@@ -12168,11 +12168,11 @@ __metadata:
 
 "truvideo-react-video-sdk@file:./../::locator=truvideo-react-video-sdk-example%40workspace%3Aexample":
   version: 1.0.0-beta.1
-  resolution: "truvideo-react-video-sdk@file:./../#./../::hash=cf2cd7&locator=truvideo-react-video-sdk-example%40workspace%3Aexample"
+  resolution: "truvideo-react-video-sdk@file:./../#./../::hash=f138ed&locator=truvideo-react-video-sdk-example%40workspace%3Aexample"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10/d219246b7b928ed358194a05aa4f3fada6a4d9364558f585c634337e61acf241b7c03fa27740834cccd8b4c8cd5ec46cd72ff34bb73fd57c9873801e12aa569b
+  checksum: 10/ca9ad203ed65aecd97c78ef6dca15c60a4bf380a1d243b8e36702623fa8346ce52ce133e51b4b5420247b1039c940d7c61b61844181c276859a21d2180698a5b
   languageName: node
   linkType: hard
 
