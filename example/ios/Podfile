@@ -1,4 +1,6 @@
 # Resolve react_native_pods.rb with node to allow for hoisting
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -8,8 +10,9 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+# use_modular_headers!
 
-# core_sdk_path = File.expand_path('../../../TruVideoReactCoreSdk', __dir__)
+core_sdk_path = File.expand_path('../../../TruVideoReactCoreSdk', __dir__)
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -20,9 +23,9 @@ end
 target 'TruVideoReactVideoSdkExample' do
   config = use_native_modules!
 
-  # if File.exist?(File.join(core_sdk_path, 'truvideo-react-core-sdk.podspec'))
-  #   pod 'truvideo-react-core-sdk', :path => core_sdk_path
-  # end
+  if File.exist?(File.join(core_sdk_path, 'truvideo-react-core-sdk.podspec'))
+    pod 'truvideo-react-core-sdk', :path => core_sdk_path
+  end
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -43,5 +46,25 @@ target 'TruVideoReactVideoSdkExample' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+     installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+
+        config.build_settings['EXCLUDED_ARCHS[sdk=maccatalyst*]'] = 'arm64 x86_64'
+        config.build_settings['SUPPORTS_MACCATALYST'] = 'NO'
+        # config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+
+         # IMPORTANT FIXES
+      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+      config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+      config.build_settings['OTHER_LDFLAGS'] = '$(inherited) -lc++'
+
+         # IMPORTANT
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+      '$(inherited)',
+      'RCT_NEW_ARCH_ENABLED=0'
+    ]
+      end
+    end
   end
 end
