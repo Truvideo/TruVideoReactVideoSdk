@@ -3,6 +3,37 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 # folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
 
+repair_versioned_framework_symlinks = lambda do |framework_dir|
+  versions_dir = File.join(framework_dir, "Versions")
+  next unless Dir.exist?(versions_dir)
+
+  current = File.join(versions_dir, "Current")
+  version = File.exist?(current) ? File.readlink(current) : "A"
+  version_dir = File.join(versions_dir, version)
+  next unless Dir.exist?(version_dir)
+
+  framework_name = File.basename(framework_dir, ".framework")
+  symlinks = {
+    framework_name => File.join("Versions", version, framework_name),
+    "Headers" => File.join("Versions", version, "Headers"),
+    "Modules" => File.join("Versions", version, "Modules"),
+    "Resources" => File.join("Versions", version, "Resources"),
+  }
+
+  symlinks.each do |name, target|
+    path = File.join(framework_dir, name)
+    next if File.exist?(path) || File.symlink?(path)
+
+    File.symlink(target, path)
+  end
+
+  File.symlink(version, current) unless File.exist?(current) || File.symlink?(current)
+end
+
+Dir.glob(File.join(__dir__, "ios", "xcframeworks", "*.xcframework", "ios-arm64_x86_64-maccatalyst", "*.framework")).each do |framework_dir|
+  repair_versioned_framework_symlinks.call(framework_dir)
+end
+
 Pod::Spec.new do |s|
   s.name         = "truvideo-react-video-sdk"
   s.version      = package["version"]
@@ -53,7 +84,7 @@ s.public_header_files = [
 # ✅ KEY FIX — exclude maccatalyst at build time for pod target
  s.pod_target_xcconfig = {
   "EXCLUDED_ARCHS[sdk=maccatalyst*]" => "arm64 x86_64",
-  "SUPPORTS_MACCATALYST" => "NO",
+  # "SUPPORTS_MACCATALYST" => "NO",
   "DEFINES_MODULE" => "YES",
   "CLANG_CXX_LANGUAGE_STANDARD" => "c++20",
   "CLANG_CXX_LIBRARY" => "libc++",
@@ -63,7 +94,7 @@ s.public_header_files = [
   # ✅ KEY FIX — propagate same restriction to the app target
   s.user_target_xcconfig = {
     "EXCLUDED_ARCHS[sdk=maccatalyst*]"       => "arm64 x86_64",
-    "SUPPORTS_MACCATALYST"                   => "NO",
+    # "SUPPORTS_MACCATALYST"                   => "NO",
 
      # IMPORTANT FIXES
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++20",

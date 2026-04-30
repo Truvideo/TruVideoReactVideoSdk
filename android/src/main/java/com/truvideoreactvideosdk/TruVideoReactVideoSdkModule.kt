@@ -337,20 +337,29 @@ class TruVideoReactVideoSdkModule(reactContext: ReactApplicationContext) :
       promise?.resolve("video path must be video not image")
       return
     }
-    try {
-      scope.launch {
-        val result =
-          TruvideoSdkVideo.clearNoise(videoFile(videoPath), videoFileDescriptor(resultPath))
+        // Launch coroutine with proper error handling
+   scope.launch {
+      try {
+        val result = TruvideoSdkVideo.clearNoise(
+          videoFile(videoPath),
+          videoFileDescriptor(resultPath)
+        )
+
+        // Validate result
+        if (result == null) {
+          promise?.reject("E_CLEAN_NOISE_FAILED", "Clean noise returned null result")
+          return@launch
+        }
+
         promise?.resolve(result)
+
+      } catch (exception: CancellationException) {
+        // Don't catch coroutine cancellation - rethrow it
+        throw exception
+
+      } catch (exception: Exception) {
+        promise?.reject("E_CLEAN_NOISE_FAILED", exception.message ?: "Failed to clean noise")
       }
-      // Handle result
-
-      // the cleaned video will be stored in resultVideoPath
-
-    } catch (exception: Exception) {
-      // Handle error
-      promise?.reject("Exception", exception.message.toString())
-      exception.printStackTrace()
     }
 
   }
