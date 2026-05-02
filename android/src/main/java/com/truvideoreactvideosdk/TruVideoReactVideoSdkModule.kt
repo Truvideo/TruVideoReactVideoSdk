@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
-import truvideo.sdk.common.exceptions.TruvideoSdkException
+import com.truvideo.sdk.model.exceptions.TruvideoSdkException
 import java.io.File
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.CancellationException
