@@ -1,6 +1,6 @@
 {
   "name": "@trunpm/truvideo-react-video-sdk",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "none",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
