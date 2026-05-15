@@ -18,47 +18,47 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		m+h01zA2E8kAScKk5W5df5qs3HA=
+		K78dfww5VgwAj/OOjqdObp4I/34=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		rpYu2ih1mI1hcwwIV5ePm36/8qA=
+		CaCawXrINjqH/JwOUHzjHm5A87A=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		7xFUnOMCs9DkcJRknyedT08Pw0k=
+		9djifDCJSRGtAIKgluDUO1acaNc=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		svKvmMAB+5J3KOJgfLtf2WLot+Y=
+		aXgvVaSEnk9E55ijgCHe3KewQlo=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		7xFUnOMCs9DkcJRknyedT08Pw0k=
+		1bNvaQtGPKJqinqz2a9AcDe2XLs=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		29YLXssuLyuPwxTTlXDXOKWT8Ug=
+		081QSBJLI0vgsrCs0ytRMnkWkXg=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		rpYu2ih1mI1hcwwIV5ePm36/8qA=
+		CaCawXrINjqH/JwOUHzjHm5A87A=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		ohtn2JoxfBq193guLFO14fzHeDM=
+		4MRyQKoPHlm/dRcGEtWairJ/aVc=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		pYXLa9UQVBBiiprbf1r9WLIMhQw=
+		s+uBdloDNKcF2izlM8PxgpHbjkQ=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		ohtn2JoxfBq193guLFO14fzHeDM=
+		lVYvxplq6+Kbhbsfj5GssvDDTI8=
 		</data>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Jy7Jpbg3JKvdeou/UYp5Bsq2MGk=
+		ZcdtHAajSZUrJQhbKSaUUfP2bbA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -116,70 +116,70 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9h50IsDweETw7I2DzrcpYn/mi3avTPy6P71aaSYVciI=
+			K2sx71a/kB3/1T2Ju4fx19wFjitz0fbmG0tsI2dHfDA=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lzLSSFpFIwotI0cj7LPE2bj1qJF9OazQdbLFhQ0lzu0=
+			bYCungVsOcKjLk5g1BI6D0Akhsd9zmN9XUd6mbZQjr8=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Djr6xQOnwB+ng5IOb7ZL+ARNd11BxzyLMa6I98UUPXQ=
+			dWdoMYhnrBBrn/TazUkt5Key7UKsyEFxBsOW9ADKpDI=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lzLSSFpFIwotI0cj7LPE2bj1qJF9OazQdbLFhQ0lzu0=
+			eSBpFJYQeK0Rs3tYzXwqMO/dv5KKUxFbycU7Xb0NmU8=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zMpgNmCZdUGf4UbHi059ZTNNXlFgA8/7Gh7Q3LVX0qk=
+			wXz9ykbhf7wjFSu7x6sZ0sLi7JzLKqjhCplZGf0/Cg8=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			9h50IsDweETw7I2DzrcpYn/mi3avTPy6P71aaSYVciI=
+			K2sx71a/kB3/1T2Ju4fx19wFjitz0fbmG0tsI2dHfDA=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ruWtL+oKpGEr672CZVyJCpDA5+mT/mNXbnW0EyRBIGI=
+			m95eg6GsKIGja+9Jx7Hcr8SRl/eFx7I3nJoAZemvXdg=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			neyeHuK0q1dMe12NFu8uQe/ms0sAwJ5YYtEkitkLD8I=
+			Izh5erdQe76Xcf3D52tbnBHf5LqdYx3Yyc/m8PB99Vs=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ruWtL+oKpGEr672CZVyJCpDA5+mT/mNXbnW0EyRBIGI=
+			EaVNtDG+QR/lfqi3RuHqW/5Ti/fRjGibIfBFylxv0CE=
 			</data>
 		</dict>
 		<key>Modules/TruvideoSdkVideo.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1SKFINATVtQJi6BowXQ9OLfgbQwlVuR077fRLuDJ92Q=
+			tPbhPCJpiUX1SoggIh8nZ2wAQ0IKZqQvMSLwkv4kOQM=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
